@@ -851,3 +851,77 @@ a {
         font-size: 12px;
     }
 }
+
+/* KHU VUC BAI VIET YEU THICH */
+.favorites-section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 28px 22px;
+    background: #f7f3eb;
+    border-radius: 24px;
+    border: 1px solid #e7e4d8;
+    color: #536b49;
+}
+
+.favorites-label {
+    color: #b47d87;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.favorites-intro {
+    color: #817c72;
+    line-height: 1.7;
+}
+
+.favorites-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.favorite-item {
+    padding: 16px;
+    background: #fffdf8;
+    border: 1px solid #e7e4d8;
+    border-radius: 16px;
+}
+
+.favorite-item a {
+    color: #536b49;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.favorite-item a:hover {
+    text-decoration: underline;
+}
+
+.favorite-item button,
+.favorite-toggle {
+    margin-top: 10px;
+    padding: 9px 13px;
+    border: 1px solid #d8c5c8;
+    border-radius: 20px;
+    background: #f6e7e9;
+    color: #79545b;
+    cursor: pointer;
+}
+
+.favorite-toggle {
+    display: inline-block;
+    margin: 8px;
+}
+
+#favoritesMessage {
+    color: #817c72;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .favorites-section {
+        margin: 24px 12px;
+        padding: 22px 16px;
+    }
+}
