@@ -300,3 +300,52 @@ function addFavoriteButtons() {
 
 addFavoriteButtons();
 renderFavorites();
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Logic Đếm ngược đến ngày thi đại học
+    const timerElement = document.getElementById("timer");
+    if (timerElement) {
+        const targetDate = new Date("2027-06-11T00:00:00").getTime();
+        const countdown = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timerElement.innerHTML = days + " ngày " + hours + "h " + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(countdown);
+                timerElement.innerHTML = "Đã đến ngày thi!";
+            }
+        }, 1000);
+    }
+
+    // 2. Logic Streak học tập
+    const streakElement = document.getElementById("streak-count");
+    if (streakElement) {
+        const today = new Date().toLocaleDateString('vi-VN');
+        let lastVisit = localStorage.getItem('lastVisit');
+        let currentStreak = parseInt(localStorage.getItem('streakCount')) || 0;
+
+        if (lastVisit !== today) {
+            if (lastVisit) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (lastVisit === yesterday.toLocaleDateString('vi-VN')) {
+                    currentStreak++; // Nối chuỗi
+                } else {
+                    currentStreak = 1; // Đứt chuỗi, tính lại
+                }
+            } else {
+                currentStreak = 1; // Lần đầu vào web
+            }
+            localStorage.setItem('lastVisit', today);
+            localStorage.setItem('streakCount', currentStreak);
+        }
+        streakElement.innerText = currentStreak;
+    }
+});
