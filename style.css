@@ -1,0 +1,188 @@
+```css
+/* Cài đặt chung */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fffaf5;
+    color: #40352f;
+    line-height: 1.7;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* Phần đầu trang */
+.header {
+    background: linear-gradient(135deg, #754c3b, #b98168);
+    color: white;
+    text-align: center;
+    padding: 55px 15px;
+}
+
+.header h1 {
+    font-family: Georgia, serif;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 17px;
+    color: #fff0e6;
+}
+
+/* Thanh điều hướng */
+.navbar {
+    background-color: #fff;
+    padding: 15px 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar a {
+    color: #754c3b;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 13px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    background-color: #f2e1d7;
+}
+
+/* Phần giới thiệu */
+.intro {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.intro h2 {
+    color: #754c3b;
+    font-family: Georgia, serif;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.intro p {
+    max-width: 700px;
+    margin: auto;
+}
+
+/* Các khu vực nội dung */
+.content-section {
+    background-color: white;
+    margin: 25px 0;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #f0e3da;
+    box-shadow: 0 5px 18px rgba(91, 61, 43, 0.05);
+    scroll-margin-top: 85px;
+}
+
+.content-section h2 {
+    color: #865b46;
+    font-family: Georgia, serif;
+    margin-bottom: 15px;
+    font-size: 25px;
+}
+
+.content-section p {
+    margin-bottom: 12px;
+}
+
+.content-section ul {
+    padding-left: 25px;
+}
+
+.content-section li {
+    margin-bottom: 8px;
+}
+
+/* Thẻ nội dung */
+.card {
+    background-color: #fff8f2;
+    border-left: 4px solid #b98168;
+    padding: 18px;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+.card h3 {
+    color: #754c3b;
+    margin-bottom: 5px;
+}
+
+/* Chân trang */
+.footer {
+    background-color: #4d352c;
+    color: #fff5ed;
+    text-align: center;
+    padding: 25px 15px;
+    margin-top: 45px;
+}
+
+.footer p {
+    margin: 4px 0;
+}
+
+/* Hiển thị trên điện thoại */
+@media (max-width: 600px) {
+    .header {
+        padding: 40px 12px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .header p {
+        font-size: 15px;
+    }
+
+    .navbar {
+        gap: 5px;
+        padding: 10px 5px;
+    }
+
+    .navbar a {
+        font-size: 13px;
+        padding: 7px 9px;
+    }
+
+    .intro {
+        padding: 35px 5px;
+    }
+
+    .intro h2 {
+        font-size: 23px;
+    }
+
+    .content-section {
+        padding: 20px;
+        margin: 18px 0;
+    }
+
+    .content-section h2 {
+        font-size: 22px;
+    }
+}
+```
