@@ -738,3 +738,116 @@ a {
     }
 }
 ```
+
+/* THANH TIM KIEM - NHAT NHANH VAN CHUONG */
+.search-section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px 22px;
+    text-align: center;
+    background: #fffaf3;
+    border: 1px solid #e6e8d9;
+    border-radius: 24px;
+}
+
+.search-label {
+    color: #879678;
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+.search-section h2 {
+    color: #536b49;
+    margin: 12px 0 22px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 650px;
+    margin: auto;
+    padding: 8px 10px 8px 16px;
+    background: white;
+    border: 1px solid #dce3d3;
+    border-radius: 50px;
+}
+
+.search-box > span {
+    font-size: 25px;
+    color: #879678;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
+.search-box button {
+    border: none;
+    border-radius: 30px;
+    padding: 12px 18px;
+    color: white;
+    background: #879b78;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #667d5b;
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.search-result {
+    display: block;
+    padding: 18px;
+    background: white;
+    border: 1px solid #e6e8d9;
+    border-radius: 16px;
+    color: #536b49;
+    text-decoration: none;
+}
+
+.search-result:hover {
+    background: #edf2e7;
+}
+
+.search-result p {
+    margin-bottom: 0;
+    color: #817c72;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+#searchMessage {
+    color: #817c72;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .search-section {
+        margin: 24px 12px;
+        padding: 24px 14px;
+    }
+
+    .search-box {
+        gap: 7px;
+        padding-left: 12px;
+    }
+
+    .search-box button {
+        padding: 11px 13px;
+        font-size: 12px;
+    }
+}
