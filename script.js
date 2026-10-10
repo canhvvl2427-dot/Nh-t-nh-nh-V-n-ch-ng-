@@ -153,3 +153,150 @@ searchInput.addEventListener("keydown", event => {
         performSearch();
     }
 });
+
+/* CHUC NANG LUU BAI YEU THICH */
+const favoriteStorageKey = "nhatNanhVanChuongFavorites";
+
+const favoritePages = [
+    {
+        title: "Ôn tập đọc hiểu",
+        url: "doc-hieu.html"
+    },
+    {
+        title: "Ôn tập văn",
+        url: "on-tap-van.html"
+    },
+    {
+        title: "Văn mẫu tham khảo",
+        url: "van-mau.html"
+    },
+    {
+        title: "Diễn đạt và trích dẫn hay",
+        url: "dien-dat.html"
+    },
+    {
+        title: "Tác phẩm hay nên đọc",
+        url: "tac-pham.html"
+    }
+];
+
+function getFavorites() {
+    try {
+        return JSON.parse(
+            localStorage.getItem(favoriteStorageKey) || "[]"
+        );
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveFavorites(favorites) {
+    try {
+        localStorage.setItem(
+            favoriteStorageKey,
+            JSON.stringify(favorites)
+        );
+        return true;
+    } catch (error) {
+        alert("Trình duyệt chưa cho phép lưu dữ liệu.");
+        return false;
+    }
+}
+
+function renderFavorites() {
+    const list = document.getElementById("favoritesList");
+    const message = document.getElementById("favoritesMessage");
+
+    if (!list || !message) return;
+
+    list.replaceChildren();
+
+    const favorites = getFavorites();
+
+    if (favorites.length === 0) {
+        message.textContent =
+            "Chưa có bài nào được lưu. Hãy bấm ♡ ở một chủ đề nhé!";
+        return;
+    }
+
+    message.textContent = `Bạn đã lưu ${favorites.length} nội dung.`;
+
+    favorites.forEach(url => {
+        const page = favoritePages.find(item => item.url === url);
+        if (!page) return;
+
+        const item = document.createElement("div");
+        item.className = "favorite-item";
+
+        const link = document.createElement("a");
+        link.href = page.url;
+        link.textContent = "♡ " + page.title;
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "Bỏ lưu";
+
+        removeButton.addEventListener("click", () => {
+            const updated = getFavorites().filter(
+                savedUrl => savedUrl !== page.url
+            );
+
+            if (saveFavorites(updated)) {
+                renderFavorites();
+                updateFavoriteButtons();
+            }
+        });
+
+        item.append(link, document.createElement("br"), removeButton);
+        list.appendChild(item);
+    });
+}
+
+function updateFavoriteButtons() {
+    document.querySelectorAll(".favorite-toggle").forEach(button => {
+        const saved = getFavorites().includes(button.dataset.url);
+        button.textContent = saved ? "♥ Đã lưu" : "♡ Lưu yêu thích";
+        button.setAttribute("aria-pressed", String(saved));
+    });
+}
+
+function addFavoriteButtons() {
+    favoritePages.forEach(page => {
+        const links = document.querySelectorAll("a[href]");
+
+        links.forEach(link => {
+            const linkPath = link.getAttribute("href").split("#")[0];
+
+            if (linkPath !== page.url) return;
+            if (link.dataset.favoriteButtonAdded === "true") return;
+
+            link.dataset.favoriteButtonAdded = "true";
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "favorite-toggle";
+            button.dataset.url = page.url;
+
+            button.addEventListener("click", () => {
+                const favorites = getFavorites();
+                const alreadySaved = favorites.includes(page.url);
+
+                const updated = alreadySaved
+                    ? favorites.filter(url => url !== page.url)
+                    : [...favorites, page.url];
+
+                if (saveFavorites(updated)) {
+                    renderFavorites();
+                    updateFavoriteButtons();
+                }
+            });
+
+            link.insertAdjacentElement("afterend", button);
+        });
+    });
+
+    updateFavoriteButtons();
+}
+
+addFavoriteButtons();
+renderFavorites();
