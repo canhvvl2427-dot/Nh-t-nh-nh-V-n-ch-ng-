@@ -1,188 +1,301 @@
-```css
-/* Cài đặt chung */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+```html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#e3ebdc">
 
-html {
-    scroll-behavior: smooth;
-}
+    <title>Nhặt Nhạnh Văn Chương</title>
+    <meta name="description" content="Góc nhỏ lưu giữ kiến thức Ngữ văn, những câu chữ đẹp và cảm hứng đọc sách.">
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #fffaf5;
-    color: #40352f;
-    line-height: 1.7;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-.container {
-    width: 90%;
-    max-width: 1100px;
-    margin: auto;
-}
+    <link rel="stylesheet" href="style.css">
+</head>
 
-/* Phần đầu trang */
-.header {
-    background: linear-gradient(135deg, #754c3b, #b98168);
-    color: white;
-    text-align: center;
-    padding: 55px 15px;
-}
+<body>
 
-.header h1 {
-    font-family: Georgia, serif;
-    font-size: 36px;
-    margin-bottom: 10px;
-}
+    <header class="hero">
+        <div class="hero-decoration decoration-one">✿</div>
+        <div class="hero-decoration decoration-two">❀</div>
+        <div class="hero-decoration decoration-three">✧</div>
 
-.header p {
-    font-size: 17px;
-    color: #fff0e6;
-}
+        <div class="hero-content">
+            <p class="eyebrow">MỘT GÓC NHỎ DÀNH CHO NGƯỜI YÊU VĂN</p>
 
-/* Thanh điều hướng */
-.navbar {
-    background-color: #fff;
-    padding: 15px 10px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
+            <h1>Nhặt Nhạnh<br>Văn Chương</h1>
 
-.navbar a {
-    color: #754c3b;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 13px;
-    border-radius: 20px;
-    transition: 0.3s;
-}
+            <div class="hero-divider">
+                <span></span> ❀ <span></span>
+            </div>
 
-.navbar a:hover {
-    background-color: #f2e1d7;
-}
+            <p class="tagline">
+                Gom nhặt con chữ — vun đầy tâm hồn.
+            </p>
 
-/* Phần giới thiệu */
-.intro {
-    text-align: center;
-    padding: 50px 20px;
-}
+            <a href="#kham-pha" class="hero-button">
+                Bắt đầu khám phá ↓
+            </a>
+        </div>
 
-.intro h2 {
-    color: #754c3b;
-    font-family: Georgia, serif;
-    margin-bottom: 15px;
-    font-size: 28px;
-}
+        <div class="hero-note">
+            <span>đọc một trang sách,</span>
+            <span>thêm một miền thương.</span>
+        </div>
+    </header>
 
-.intro p {
-    max-width: 700px;
-    margin: auto;
-}
+    <nav class="navbar">
+        <a href="#kham-pha">Trang chủ</a>
+        <a href="#doc-hieu">Đọc hiểu</a>
+        <a href="#bai-van">Ôn tập</a>
+        <a href="#van-mau">Văn mẫu</a>
+        <a href="#dien-dat">Trích dẫn hay</a>
+        <a href="#tac-pham">Tủ sách</a>
+    </nav>
 
-/* Các khu vực nội dung */
-.content-section {
-    background-color: white;
-    margin: 25px 0;
-    padding: 30px;
-    border-radius: 15px;
-    border: 1px solid #f0e3da;
-    box-shadow: 0 5px 18px rgba(91, 61, 43, 0.05);
-    scroll-margin-top: 85px;
-}
+    <main class="container" id="kham-pha">
 
-.content-section h2 {
-    color: #865b46;
-    font-family: Georgia, serif;
-    margin-bottom: 15px;
-    font-size: 25px;
-}
+        <section class="welcome">
+            <div class="welcome-flower">❀</div>
 
-.content-section p {
-    margin-bottom: 12px;
-}
+            <p class="section-label">CHÀO MỪNG BẠN GHÉ THĂM</p>
 
-.content-section ul {
-    padding-left: 25px;
-}
+            <h2>Nơi con chữ nở thành hoa</h2>
 
-.content-section li {
-    margin-bottom: 8px;
-}
+            <p class="welcome-text">
+                Có những điều chỉ khi đọc văn, ta mới hiểu được.
+                Có những cảm xúc chỉ con chữ mới gọi thành tên.
+                Mong rằng nơi này sẽ trở thành một góc nhỏ để bạn
+                học tập, suy ngẫm và tìm thấy vẻ đẹp của ngôn từ.
+            </p>
 
-/* Thẻ nội dung */
-.card {
-    background-color: #fff8f2;
-    border-left: 4px solid #b98168;
-    padding: 18px;
-    margin-top: 15px;
-    border-radius: 8px;
-}
+            <p class="signature">Thân gửi, từ một người yêu văn.</p>
+        </section>
 
-.card h3 {
-    color: #754c3b;
-    margin-bottom: 5px;
-}
+        <section class="section-heading">
+            <p class="section-label">THEO CHÂN NHỮNG CON CHỮ</p>
+            <h2>Góc học tập của bạn</h2>
+            <p>Chậm rãi học, dịu dàng viết, sâu sắc cảm nhận.</p>
+        </section>
 
-/* Chân trang */
-.footer {
-    background-color: #4d352c;
-    color: #fff5ed;
-    text-align: center;
-    padding: 25px 15px;
-    margin-top: 45px;
-}
+        <section class="learning-grid">
 
-.footer p {
-    margin: 4px 0;
-}
+            <a href="#doc-hieu" class="learning-card green-card">
+                <span class="card-number">01 / STUDY</span>
+                <span class="card-icon">❧</span>
+                <h3>Ôn tập đọc hiểu</h3>
+                <p>Hiểu văn bản, nhận diện nghệ thuật và khám phá thông điệp.</p>
+                <span class="card-link">Khám phá thêm ↗</span>
+            </a>
 
-/* Hiển thị trên điện thoại */
-@media (max-width: 600px) {
-    .header {
-        padding: 40px 12px;
-    }
+            <a href="#bai-van" class="learning-card pink-card">
+                <span class="card-number">02 / REVIEW</span>
+                <span class="card-icon">✎</span>
+                <h3>Ôn tập các bài văn</h3>
+                <p>Hệ thống kiến thức, dàn ý và phương pháp làm bài.</p>
+                <span class="card-link">Khám phá thêm ↗</span>
+            </a>
 
-    .header h1 {
-        font-size: 28px;
-    }
+            <a href="#van-mau" class="learning-card pink-card">
+                <span class="card-number">03 / WRITING</span>
+                <span class="card-icon">❀</span>
+                <h3>Các bài văn mẫu</h3>
+                <p>Tham khảo cách lập luận, phân tích và diễn đạt ý tưởng.</p>
+                <span class="card-link">Khám phá thêm ↗</span>
+            </a>
 
-    .header p {
-        font-size: 15px;
-    }
+            <a href="#dien-dat" class="learning-card green-card">
+                <span class="card-number">04 / WORDS</span>
+                <span class="card-icon">“ ”</span>
+                <h3>Diễn đạt & trích dẫn hay</h3>
+                <p>Lưu giữ những câu chữ đẹp và cách viết giàu cảm xúc.</p>
+                <span class="card-link">Khám phá thêm ↗</span>
+            </a>
 
-    .navbar {
-        gap: 5px;
-        padding: 10px 5px;
-    }
+        </section>
 
-    .navbar a {
-        font-size: 13px;
-        padding: 7px 9px;
-    }
+        <section id="doc-hieu" class="content-section">
+            <p class="section-label">01 — HIỂU ĐỂ CẢM</p>
+            <h2>Ôn tập đọc hiểu</h2>
 
-    .intro {
-        padding: 35px 5px;
-    }
+            <p class="section-description">
+                Những kiến thức nền tảng giúp bạn đọc sâu hơn
+                và trả lời câu hỏi có cơ sở.
+            </p>
 
-    .intro h2 {
-        font-size: 23px;
-    }
+            <div class="article-list">
+                <article class="article-item">
+                    <span class="article-symbol">✿</span>
+                    <div>
+                        <h3>Nhận diện thể loại và phương thức biểu đạt</h3>
+                        <p>Ôn lại những dấu hiệu cơ bản và cách xác định trong văn bản.</p>
+                    </div>
+                </article>
 
-    .content-section {
-        padding: 20px;
-        margin: 18px 0;
-    }
+                <article class="article-item">
+                    <span class="article-symbol">✿</span>
+                    <div>
+                        <h3>Biện pháp tu từ</h3>
+                        <p>Nhận diện, phân tích tác dụng và liên hệ với nội dung.</p>
+                    </div>
+                </article>
 
-    .content-section h2 {
-        font-size: 22px;
-    }
-}
+                <article class="article-item">
+                    <span class="article-symbol">✿</span>
+                    <div>
+                        <h3>Chủ đề, thông điệp và cảm hứng chủ đạo</h3>
+                        <p>Luyện cách tìm ý chính và trình bày nhận xét rõ ràng.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="bai-van" class="content-section">
+            <p class="section-label">02 — VIẾT BẰNG SUY NGHĨ</p>
+            <h2>Ôn tập các bài văn</h2>
+
+            <div class="topic-grid">
+                <article class="topic-card">
+                    <span>01</span>
+                    <h3>Nghị luận văn học</h3>
+                    <p>Phân tích nhân vật, hình tượng, chi tiết và nghệ thuật.</p>
+                </article>
+
+                <article class="topic-card">
+                    <span>02</span>
+                    <h3>Nghị luận xã hội</h3>
+                    <p>Triển khai luận điểm, dẫn chứng và bài học nhận thức.</p>
+                </article>
+
+                <article class="topic-card">
+                    <span>03</span>
+                    <h3>Kỹ năng viết</h3>
+                    <p>Luyện mở bài, chuyển ý, lập luận và kết bài.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="van-mau" class="content-section">
+            <p class="section-label">03 — ĐỌC ĐỂ HỌC CÁCH VIẾT</p>
+            <h2>Các bài văn mẫu</h2>
+
+            <p class="section-description">
+                Mỗi bài viết là một cách tiếp cận tác phẩm.
+                Hãy tham khảo để tìm ra tiếng nói riêng của mình.
+            </p>
+
+            <div class="book-grid">
+                <article class="book-card">
+                    <div class="book-cover cover-green">
+                        <span>TRUYỆN NGẮN</span>
+                        <h3>Chiếc thuyền<br>ngoài xa</h3>
+                        <p>Nguyễn Minh Châu</p>
+                        <span class="cover-flower">❀</span>
+                    </div>
+                    <div class="book-info">
+                        <h3>Chiếc thuyền ngoài xa</h3>
+                        <p>Nghệ thuật, cuộc sống và góc nhìn đa chiều về con người.</p>
+                    </div>
+                </article>
+
+                <article class="book-card">
+                    <div class="book-cover cover-pink">
+                        <span>TRUYỆN NGẮN</span>
+                        <h3>Vợ nhặt</h3>
+                        <p>Kim Lân</p>
+                        <span class="cover-flower">✿</span>
+                    </div>
+                    <div class="book-info">
+                        <h3>Vợ nhặt</h3>
+                        <p>Tình người và khát vọng sống trong hoàn cảnh khắc nghiệt.</p>
+                    </div>
+                </article>
+
+                <article class="book-card">
+                    <div class="book-cover cover-cream">
+                        <span>TRUYỆN NGẮN</span>
+                        <h3>Vợ chồng<br>A Phủ</h3>
+                        <p>Tô Hoài</p>
+                        <span class="cover-flower">❁</span>
+                    </div>
+                    <div class="book-info">
+                        <h3>Vợ chồng A Phủ</h3>
+                        <p>Sức sống tiềm tàng và khát vọng tự do của con người.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="dien-dat" class="quote-section">
+            <p class="section-label">04 — NHỮNG ĐIỀU MUỐN GIỮ LẠI</p>
+            <h2>Góc nhặt nhạnh câu chữ</h2>
+
+            <blockquote>
+                “Văn chương bắt đầu từ cuộc sống,
+                nhưng không dừng lại ở những điều ta nhìn thấy.”
+            </blockquote>
+
+            <p class="quote-note">
+                Một lời nhắc nhỏ về cách đọc và cảm nhận văn học.
+            </p>
+
+            <div class="writing-tip">
+                <h3>✎ Một cách diễn đạt có thể dùng</h3>
+                <p>
+                    “Không chỉ khắc họa ..., tác phẩm còn gợi mở
+                    những suy ngẫm sâu sắc về ...”
+                </p>
+                <p class="tip-note">
+                    Hãy thay phần dấu ba chấm bằng nội dung phù hợp với tác phẩm.
+                </p>
+            </div>
+        </section>
+
+        <section id="tac-pham" class="content-section bookshelf">
+            <p class="section-label">05 — MỞ MỘT TRANG SÁCH</p>
+            <h2>Một số tác phẩm hay nên đọc</h2>
+
+            <ul class="book-list">
+                <li>
+                    <span>Vợ chồng A Phủ</span>
+                    <span>Tô Hoài</span>
+                </li>
+                <li>
+                    <span>Vợ nhặt</span>
+                    <span>Kim Lân</span>
+                </li>
+                <li>
+                    <span>Chiếc thuyền ngoài xa</span>
+                    <span>Nguyễn Minh Châu</span>
+                </li>
+                <li>
+                    <span>Rừng xà nu</span>
+                    <span>Nguyễn Trung Thành</span>
+                </li>
+                <li>
+                    <span>Người lái đò Sông Đà</span>
+                    <span>Nguyễn Tuân</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="closing-note">
+            <span>❀</span>
+            <p>“Mong bạn tìm thấy một điều đẹp đẽ trong mỗi trang văn.”</p>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p class="footer-title">Nhặt Nhạnh Văn Chương</p>
+        <p>Gom nhặt con chữ — vun đầy tâm hồn.</p>
+        <p class="footer-small">Một góc nhỏ cho những tâm hồn yêu văn học · 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
 ```
