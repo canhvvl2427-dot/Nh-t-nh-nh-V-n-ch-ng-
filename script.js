@@ -301,27 +301,31 @@ function addFavoriteButtons() {
 addFavoriteButtons();
 renderFavorites();
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. Logic Đếm ngược đến ngày thi đại học
-    const timerElement = document.getElementById("timer");
-    if (timerElement) {
-        const targetDate = new Date("2027-06-11T00:00:00").getTime();
-        const countdown = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
+  function updateCountdown() {
+  const target = new Date("2027-06-11T00:00:00+07:00").getTime();
+  const remaining = target - Date.now();
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  const set = (id, value) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  };
 
-            timerElement.innerHTML = days + " ngày " + hours + "h " + minutes + "m " + seconds + "s ";
+  if (remaining <= 0) {
+    set("cd-days", "0");
+    set("cd-hours", "00");
+    set("cd-minutes", "00");
+    set("cd-seconds", "00");
+    return;
+  }
 
-            if (distance < 0) {
-                clearInterval(countdown);
-                timerElement.innerHTML = "Đã đến ngày thi!";
-            }
-        }, 1000);
-    }
+  set("cd-days", Math.floor(remaining / 86400000));
+  set("cd-hours", String(Math.floor(remaining / 3600000) % 24).padStart(2, "0"));
+  set("cd-minutes", String(Math.floor(remaining / 60000) % 60).padStart(2, "0"));
+  set("cd-seconds", String(Math.floor(remaining / 1000) % 60).padStart(2, "0"));
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
     // 2. Logic Streak học tập
     const streakElement = document.getElementById("streak-count");
