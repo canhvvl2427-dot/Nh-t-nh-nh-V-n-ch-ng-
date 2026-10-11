@@ -1,5 +1,4 @@
-
-/* Nhặt Nhạnh Văn Chương — Bản posts.js hoàn chỉnh bóc tách tuyệt đối danh mục con */
+/* Nhặt Nhạnh Văn Chương — Bản Fix Cố Định Lỗi Đăng Bài & Lọc Chuyên Mục */
 const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
@@ -127,14 +126,12 @@ function renderCards(posts, container, isHome = false) {
   });
 }
 
-// HÀM LỌC CHÍNH XÁC TUYỆT ĐỐI THEO TỪNG DANH MỤC CỤ THỂ
+// HÀM LỌC CHÍNH XÁC TUYỆT ĐỐI KHÔNG BỊ LẪN LỘN
 async function fetchPosts(category, limit = 100) { 
   let q = supabaseClient.from('posts').select('*').order('created_at', { ascending: false }).limit(limit); 
-  
   if (category) {
-    q = q.eq('category', category); // Lọc chính xác 100% không để bị lẫn lộn giữa văn học và xã hội
+    q = q.eq('category', category);
   }
-  
   const { data, error } = await q; 
   if (error) throw error; 
   return data || [];
@@ -158,18 +155,18 @@ async function loadHome() {
 async function loadCategory() { 
   let file = location.pathname.split('/').pop() || 'index.html'; 
   
-  // Mặc định ban đầu khi vào trang Ôn tập văn, cho nó hiển thị mặc định mục Nghị luận văn học trước
   let category = NNVC_CATEGORIES[file];
-  if (file === 'on-tap-van.html') category = 'Ôn tập văn - Nghị luận văn học';
-  if (file === 'van-mau.html') category = 'Văn mẫu - Nghị luận văn học';
   
+  // Kiểm tra an toàn nếu đang ở trang chuyên mục con
   const feedSection = document.querySelector('.nnvc-category-feed');
   if (feedSection && feedSection.hasAttribute('data-category')) {
     category = feedSection.getAttribute('data-category');
   }
 
   const filterSelect = document.getElementById('filter');
-  if (filterSelect) category = filterSelect.value;
+  if (filterSelect && filterSelect.value) {
+    category = filterSelect.value;
+  }
 
   const box = document.querySelector('.nnvc-posts') || document.getElementById('posts'); 
   if (!box) return; 
@@ -206,11 +203,3 @@ async function saveEdit() {
       content: document.getElementById('nnvcEditContent').value.trim() 
     }).eq('id', currentEditingPostId);
     if (error) throw error;
-    document.getElementById('nnvcEditModal').classList.remove('active');
-    await loadCategory(); 
-  } catch (error) { alert("Lỗi khi lưu: " + error.message); } 
-  finally { btn.textContent = "Lưu lại thay đổi"; btn.disabled = false; }
-}
-
-document.addEventListener('DOMContentLoaded', () => { 
-  document.
