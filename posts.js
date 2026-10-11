@@ -259,3 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (saveEditBtn) saveEditBtn.addEventListener('click', saveEdit);
   }, 500);
 });
+<!-- THANH HEADER CỐ ĐỊNH LUÔN HIỆN Ở GÓC TRÁI -->
+<header class="nnvc-global-header">
+  <a href="index.html" class="nnvc-brand-logo">
+    <span class="icon">📖</span>
+    <span>Nhặt Nhạnh Văn Chương</span>
+  </a>
+  <!-- Nếu mày có các nút menu phụ bên phải thì nhét vào đây, không thì thôi -->
+</header>
+
