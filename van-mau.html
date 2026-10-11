@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -11,10 +10,12 @@
         .back-link { display: inline-block; margin-bottom: 24px; color: #58734f; text-decoration: none; }
         .page-heading { background: #e5eddf; border-radius: 24px; padding: 36px 24px; margin-bottom: 30px; }
         
-        /* Giao diện nút chọn mục nhỏ NLVH / NLXH */
-        .sub-category-bar { display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; }
-        .sub-btn { padding: 10px 20px; background: #fffdf7; border: 1px solid #e9e2d5; border-radius: 20px; color: #52634b; text-decoration: none; font-weight: bold; font-family: 'Quicksand', sans-serif; transition: 0.2s; cursor: pointer; }
-        .sub-btn:hover, .sub-btn.active { background: #58734f; color: white; border-color: #58734f; }
+        /* Giao diện 2 ô card to bự cho Văn mẫu */
+        .topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .topic-card { display: block; padding: 28px; background: #fffdf7; border: 1px solid #e9e2d5; border-radius: 20px; color: #52634b; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+        .topic-card:hover, .topic-card.active { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(83,107,73,0.12); border-color: #7A9B76; background: #FAF7EE; }
+        .topic-card h2 { font-size: 1.3rem; margin-top: 0; color: #7A9B76; font-family: 'Quicksand', sans-serif; }
+        .topic-card p { color: #81776c; line-height: 1.7; margin-bottom: 0; }
 
         @media (max-width: 600px) {
             .page-content { margin: 20px auto; padding: 16px; }
@@ -31,17 +32,22 @@
         <p>Những bài viết để tham khảo cách nghĩ, cách lập luận và cách cảm nhận vẻ đẹp của văn chương.</p>
     </header>
 
-    <!-- NÚT CHỌN 2 MỤC NHỎ -->
-    <div class="sub-category-bar">
-        <button class="sub-btn active" onclick="filterSubCategory('Văn mẫu', this)">Tất cả Văn mẫu</button>
-        <button class="sub-btn" onclick="filterSubCategory('Văn mẫu - Nghị luận văn học', this)">📚 Nghị luận văn học</button>
-        <button class="sub-btn" onclick="filterSubCategory('Văn mẫu - Nghị luận xã hội', this)">💡 Nghị luận xã hội</button>
+    <!-- 2 Ô CARD LỰA CHỌN MỤC NHỎ -->
+    <div class="topic-grid">
+        <div class="topic-card active" onclick="selectSubCategory('Văn mẫu - Nghị luận văn học', this)">
+            <h2>📚 Nghị luận văn học</h2>
+            <p>Tổng hợp các bài văn mẫu tham khảo đạt điểm cao về các tác phẩm văn học chương trình mới.</p>
+        </div>
+        <div class="topic-card" onclick="selectSubCategory('Văn mẫu - Nghị luận xã hội', this)">
+            <h2>💡 Nghị luận xã hội</h2>
+            <p>Các bài viết mẫu nghị luận 200 chữ hoặc bài văn nghị luận xã hội giàu cảm xúc và sắc sảo.</p>
+        </div>
     </div>
 
-    <!-- KHU VỰC HIỂN THỊ BÀI VIẾT -->
-    <section class="nnvc-community nnvc-category-feed" data-category="Văn mẫu">
+    <!-- KHU VỰC HIỂN THỊ BÀI VIẾT THEO MỤC ĐƯỢC CHỌN -->
+    <section class="nnvc-community nnvc-category-feed" data-category="Văn mẫu - Nghị luận văn học">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="margin:0;">Bài viết</h2>
+            <h2 id="sectionTitle" style="margin:0; color: #7A9B76; font-family: 'Quicksand', sans-serif;">Bài viết: Nghị luận văn học</h2>
             <a href="cong-dong.html" style="background: #7A9B76; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold;">＋ Viết bài mới</a>
         </div>
         <div aria-live="polite" class="nnvc-posts">Đang tải bài viết...</div>
@@ -55,16 +61,22 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="posts.js"></script>
 <script>
-    // Hàm bấm vào nút chuyển mục nhỏ
-    function filterSubCategory(catName, btnElement) {
-        document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-        btnElement.classList.add('active');
+    function selectSubCategory(catName, cardElement) {
+        document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('active'));
+        cardElement.classList.add('active');
         
         const feedSection = document.querySelector('.nnvc-category-feed');
+        const titleEl = document.getElementById('sectionTitle');
+        
         if(feedSection) {
             feedSection.setAttribute('data-category', catName);
+            if(catName.includes('văn học')) {
+                titleEl.textContent = "Bài viết: Nghị luận văn học";
+            } else {
+                titleEl.textContent = "Bài viết: Nghị luận xã hội";
+            }
             if(typeof loadCategory === 'function') {
-                loadCategory(); // Gọi lại hàm tải bài viết trong posts.js
+                loadCategory();
             }
         }
     }
