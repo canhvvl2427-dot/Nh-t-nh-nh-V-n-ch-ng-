@@ -1,5 +1,4 @@
-
-/* Nhặt Nhạnh Văn Chương — Bản posts.js hoàn chỉnh chống lẫn lộn danh mục */
+/* Nhặt Nhạnh Văn Chương — Bản Fix Triệt Để Lọc Chuyên Mục Con */
 const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
@@ -127,16 +126,13 @@ function renderCards(posts, container, isHome = false) {
   });
 }
 
-// HÀM LỌC CHUẨN XÁC TUYỆT ĐỐI KHÔNG BỊ LẪN LỘN GIỮA VĂN HỌC VÀ XÃ HỘI
+// HÀM LỌC CHÍNH XÁC: BẤM MỤC NÀO LẤY ĐÚNG MỤC ĐÓ, KHÔNG QUÉT GOM BẬY BẠ
 async function fetchPosts(category, limit = 100) { 
   let q = supabaseClient.from('posts').select('*').order('created_at', { ascending: false }).limit(limit); 
   
   if (category) {
-    if (category === "Ôn tập văn" || category === "Văn mẫu") {
-      q = q.ilike('category', category + '%');
-    } else {
-      q = q.eq('category', category); // Khớp chính xác 100% tên danh mục con
-    }
+    // Dùng .eq để lọc chính xác tuyệt đối tên danh mục trong Database
+    q = q.eq('category', category);
   }
   
   const { data, error } = await q; 
@@ -161,7 +157,11 @@ async function loadHome() {
 
 async function loadCategory() { 
   let file = location.pathname.split('/').pop() || 'index.html'; 
-  let category = NNVC_CATEGORIES[file]; 
+  
+  // Mặc định ban đầu khi vào trang Ôn tập văn, cho nó hiển thị mặc định mục Nghị luận văn học trước
+  let category = NNVC_CATEGORIES[file];
+  if (file === 'on-tap-van.html') category = 'Ôn tập văn - Nghị luận văn học';
+  if (file === 'van-mau.html') category = 'Văn mẫu - Nghị luận văn học';
   
   const feedSection = document.querySelector('.nnvc-category-feed');
   if (feedSection && feedSection.hasAttribute('data-category')) {
