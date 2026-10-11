@@ -1,7 +1,7 @@
 /* Nhặt Nhạnh Văn Chương — bài do người dùng tự đăng, không có nội dung mẫu cài sẵn.
    Dán Publishable key của project Supabase ĐÚNG vào SUPABASE_KEY. */
 const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
-const SUPABASE_KEY = "DAN_PUBLISHABLE_KEY_CUA_PROJECT_NAY_VAO_DAY";
+const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 const NNVC_CATEGORIES = {
   "doc-hieu.html": "Đọc hiểu",
   "on-tap-van.html": "Ôn tập văn",
