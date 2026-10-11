@@ -21,12 +21,15 @@
     input, select, textarea { width: 100%; padding: 12px; margin: 8px 0 20px; border: 1px solid #E8E5D8; border-radius: 12px; background: #FAFAFA; font-family: 'Nunito', sans-serif; font-size: 15px; box-sizing: border-box; }
     textarea { min-height: 150px; resize: vertical; }
     button[type="submit"] { background: #7A9B76; color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 15px; width: 100%; }
+    button[type="submit"]:hover { background: #6A8A66; }
+    .success { color: #7A9B76; font-weight: bold; }
+    .error { color: #E29595; font-weight: bold; }
   </style>
 </head>
 <body>
 
   <header>
-    <div style="max-width: 900px; margin: auto; display: flex; justify-content: space-between;">
+    <div style="max-width: 900px; margin: auto; display: flex; justify-content: space-between; align-items: center;">
       <strong style="color: #7A9B76; font-size: 18px;">🌿 Nhặt Nhạnh Văn Chương</strong>
       <a href="index.html" style="color: #7A9B76; text-decoration: none; font-weight: bold;">Về trang chủ ↗</a>
     </div>
@@ -38,7 +41,7 @@
       <p style="color: #959C8D;">Nơi chậm rãi học, dịu dàng viết và sâu sắc cảm nhận.</p>
     </div>
 
-    <!-- KHU VỰC FORM ĐĂNG BÀI -->
+    <!-- KHU VỰC FORM ĐĂNG BÀI (ĐÃ CÓ NLXH & NLVH) -->
     <section class="form-box">
       <h2 style="color: #7A9B76; margin-top: 0;">✍️ Chia sẻ bài viết</h2>
       
@@ -52,8 +55,17 @@
         <label style="font-weight: bold;">Chọn chuyên mục</label>
         <select id="category" required>
           <option value="Đọc hiểu">Đọc hiểu</option>
-          <option value="Ôn tập văn">Ôn tập văn</option>
-          <option value="Văn mẫu">Văn mẫu</option>
+          
+          <optgroup label="📚 Ôn tập văn">
+            <option value="Ôn tập văn - Nghị luận văn học">Nghị luận văn học (Ôn tập)</option>
+            <option value="Ôn tập văn - Nghị luận xã hội">Nghị luận xã hội (Ôn tập)</option>
+          </optgroup>
+          
+          <optgroup label="📝 Văn mẫu">
+            <option value="Văn mẫu - Nghị luận văn học">Nghị luận văn học (Văn mẫu)</option>
+            <option value="Văn mẫu - Nghị luận xã hội">Nghị luận xã hội (Văn mẫu)</option>
+          </optgroup>
+          
           <option value="Diễn đạt">Diễn đạt</option>
           <option value="Tác phẩm">Tác phẩm</option>
         </select>
@@ -63,16 +75,23 @@
 
         <button id="submitBtn" type="submit">Đăng bài công khai</button>
       </form>
-      <p id="message" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
+      <p id="message" style="margin-top: 15px; text-align: center;"></p>
     </section>
 
-    <!-- KHU VỰC HIỂN THỊ BÀI VIẾT -->
+    <!-- KHU VỰC HIỂN THỊ & LỌC BÀI -->
     <section>
       <select id="filter" style="width: auto; margin-bottom: 20px; font-weight: bold; color: #7A9B76;">
         <option value="">Tất cả bài viết</option>
         <option value="Đọc hiểu">Đọc hiểu</option>
-        <option value="Ôn tập văn">Ôn tập văn</option>
-        <option value="Văn mẫu">Văn mẫu</option>
+        
+        <option value="Ôn tập văn">-- Tất cả Ôn tập văn --</option>
+        <option value="Ôn tập văn - Nghị luận văn học">&nbsp;&nbsp;&nbsp;↳ Nghị luận văn học</option>
+        <option value="Ôn tập văn - Nghị luận xã hội">&nbsp;&nbsp;&nbsp;↳ Nghị luận xã hội</option>
+        
+        <option value="Văn mẫu">-- Tất cả Văn mẫu --</option>
+        <option value="Văn mẫu - Nghị luận văn học">&nbsp;&nbsp;&nbsp;↳ Nghị luận văn học</option>
+        <option value="Văn mẫu - Nghị luận xã hội">&nbsp;&nbsp;&nbsp;↳ Nghị luận xã hội</option>
+        
         <option value="Diễn đạt">Diễn đạt</option>
         <option value="Tác phẩm">Tác phẩm</option>
       </select>
@@ -84,7 +103,7 @@
     </section>
   </div>
 
-  <!-- NỐI VỚI FILE POSTS.JS XỊN CỦA MÀY -->
+  <!-- NỐI VỚI FILE POSTS.JS -->
   <script src="posts.js"></script>
 </body>
 </html>
