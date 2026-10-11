@@ -14,7 +14,7 @@
     * { box-sizing: border-box; }
 
     :root {
-      /* Bảng màu xanh pastel nhẹ nhàng */
+      /* Màu pastel nhẹ nhàng */
       --cream: #F9F7F1;
       --white: #FFFFFF;
       --green-light: #E8F0E1;
@@ -28,14 +28,14 @@
 
     body {
       margin: 0;
-      font-family: 'Nunito', sans-serif; /* Phông chữ nội dung mềm mại */
+      font-family: 'Nunito', sans-serif;
       background: var(--cream);
       color: var(--ink);
       line-height: 1.7;
     }
 
     h1, h2, h3, button, select, input {
-      font-family: 'Quicksand', sans-serif; /* Phông chữ tiêu đề bo tròn */
+      font-family: 'Quicksand', sans-serif;
     }
 
     header {
@@ -71,20 +71,15 @@
     .panel, .post {
       background: var(--white);
       border: none;
-      border-radius: 24px; /* Bo góc to tròn */
+      border-radius: 24px;
       padding: 30px;
       margin-bottom: 24px;
-      box-shadow: var(--shadow); /* Bóng đổ nhẹ nhàng */
+      box-shadow: var(--shadow);
     }
 
-    .hero {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
+    .hero { text-align: center; margin-bottom: 40px; }
     h1 { color: var(--green-dark); font-size: 32px; margin: 0 0 10px; }
     h2 { color: var(--green-dark); margin-top: 0; }
-
     .muted { color: var(--muted); font-size: 14px; }
 
     input, select, textarea {
@@ -92,17 +87,9 @@
       padding: 14px 16px;
       margin: 8px 0 20px;
       border: 1px solid var(--border);
-      border-radius: 16px; /* Bo tròn ô nhập liệu */
+      border-radius: 16px;
       background: #FAFAFA;
       font-size: 15px;
-      transition: all 0.2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--green);
-      background: var(--white);
-      box-shadow: 0 0 0 3px rgba(197, 216, 184, 0.3);
     }
 
     textarea { min-height: 160px; resize: vertical; }
@@ -114,14 +101,10 @@
       font-weight: 700;
       font-size: 15px;
       padding: 12px 24px;
-      border-radius: 30px; /* Bo tròn viên thuốc */
+      border-radius: 30px;
       cursor: pointer;
-      transition: 0.2s ease;
     }
-
-    button:hover { background: #6A8A66; transform: translateY(-2px); }
-    button:active { transform: scale(0.95); }
-    button:disabled { opacity: 0.6; cursor: wait; }
+    button:hover { background: #6A8A66; }
 
     .post-category {
       display: inline-block;
@@ -137,99 +120,58 @@
     .post h2 { margin: 0 0 8px; font-size: 22px; }
     .post .meta { margin: 0 0 16px; font-size: 13px; color: var(--muted); }
 
-    /* === KHU VỰC CẮT CHỮ VÀ NÚT XEM THÊM === */
+    /* LÀM CHO BÀI VĂN BỊ CẮT NGẮN */
     .post-content {
       white-space: pre-wrap;
       overflow-wrap: anywhere;
       display: -webkit-box;
-      -webkit-line-clamp: 5; /* Cắt ở dòng thứ 5 */
+      -webkit-line-clamp: 4; /* Giới hạn 4 dòng */
       -webkit-box-orient: vertical;
       overflow: hidden;
-      transition: all 0.3s ease;
+      margin-bottom: 15px;
       color: var(--ink);
     }
 
-    .post-content.expanded {
-      -webkit-line-clamp: unset;
-    }
-
-    .read-more-btn {
-      background: var(--green-light);
+    /* LINK ĐỌC BÀI CHUYỂN TRANG */
+    .read-more-link {
       color: var(--green-dark);
-      padding: 6px 16px;
-      margin-top: 12px;
-      font-size: 13px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-block;
+      margin-bottom: 10px;
     }
-    .read-more-btn:hover { background: var(--green); color: white; }
+    .read-more-link:hover { text-decoration: underline; }
 
-    /* === CÁC NÚT TƯƠNG TÁC (Tim, Sửa, Xóa) === */
     .post-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px dashed var(--border);
+      display: flex; gap: 10px; justify-content: flex-end;
+      margin-top: 10px; padding-top: 16px; border-top: 1px dashed var(--border);
     }
-
-    .post-actions button {
-      padding: 8px 16px;
-      font-size: 13px;
-    }
-
+    .post-actions button { padding: 8px 16px; font-size: 13px; }
     .button-danger { background: #E29595; }
-    .button-danger:hover { background: #CC7A7A; }
     .button-streak { background: #E8A598; }
-    .button-streak:hover { background: #D18B7E; }
 
     #message { white-space: pre-wrap; font-weight: bold; margin-top: 10px;}
     .error { color: #D47777; }
     .success { color: var(--green-dark); }
 
-    /* === BẢNG SỬA BÀI === */
+    /* BẢNG CHỈNH SỬA */
     .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(85, 90, 79, 0.4);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
+      display: none; position: fixed; inset: 0; background: rgba(85, 90, 79, 0.4);
+      z-index: 1000; align-items: center; justify-content: center; padding: 16px;
     }
     .modal.active { display: flex; }
-
     .modal-content {
-      background: var(--white);
-      border-radius: 24px;
-      padding: 30px;
-      width: min(700px, 100%);
-      max-height: 90vh;
-      overflow-y: auto;
+      background: var(--white); border-radius: 24px; padding: 30px;
+      width: min(700px, 100%); max-height: 90vh; overflow-y: auto;
     }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .modal-close {
-      background: #F0F0F0; color: #666;
-      width: 36px; height: 36px; padding: 0;
+      background: #F0F0F0; color: #666; width: 36px; height: 36px; padding: 0;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    }
-    .modal-close:hover { background: #E0E0E0; }
-
-    @media (max-width: 600px) {
-      .panel, .post { padding: 20px; }
-      .post-actions { flex-wrap: wrap; justify-content: flex-start; }
-      .post-actions button { flex: 1 1 auto; text-align: center; }
     }
   </style>
 </head>
-
 <body>
   <header>
     <nav>
@@ -244,16 +186,13 @@
       <p class="muted">Nơi chậm rãi học, dịu dàng viết và sâu sắc cảm nhận.</p>
     </div>
 
-    <!-- KHU VỰC ĐĂNG BÀI -->
     <section class="panel">
       <h2>✍️ Chia sẻ bài viết</h2>
       <form id="postForm">
         <label>Tên hiển thị</label>
         <input id="author" maxlength="60" placeholder="Ví dụ: Một người yêu văn" required>
-
         <label>Tiêu đề bài viết</label>
         <input id="title" maxlength="200" placeholder="Nhập tiêu đề..." required>
-
         <label>Chọn mục</label>
         <select id="category" required>
           <option value="Đọc hiểu">Đọc hiểu</option>
@@ -262,16 +201,13 @@
           <option value="Diễn đạt">Diễn đạt</option>
           <option value="Tác phẩm">Tác phẩm</option>
         </select>
-
         <label>Nội dung bài viết</label>
         <textarea id="content" maxlength="20000" placeholder="Viết điều bạn muốn chia sẻ..." required></textarea>
-
         <button id="submitBtn" type="submit">Đăng bài công khai</button>
       </form>
       <p id="message" role="status"></p>
     </section>
 
-    <!-- KHU VỰC HIỂN THỊ BÀI VIẾT -->
     <section>
       <select id="filter" style="width: auto; padding: 8px 16px; border-radius: 20px; font-weight: bold; color: var(--green-dark);">
         <option value="">Tất cả bài viết</option>
@@ -281,20 +217,17 @@
         <option value="Diễn đạt">Diễn đạt</option>
         <option value="Tác phẩm">Tác phẩm</option>
       </select>
-
       <p id="loading" class="muted">Đang tải những trang văn...</p>
       <div id="posts"></div>
     </section>
   </main>
 
-  <!-- BẢNG CHỈNH SỬA BÀI VIẾT -->
   <div id="editModal" class="modal" aria-hidden="true">
     <div class="modal-content">
       <div class="modal-header">
         <h2>Chỉnh sửa bài viết</h2>
         <button type="button" class="modal-close" onclick="closeEditModal()">✕</button>
       </div>
-
       <form id="editForm">
         <label>Tiêu đề</label>
         <input id="editTitle" required>
@@ -309,15 +242,11 @@
         <label>Nội dung</label>
         <textarea id="editContent" required></textarea>
         <p id="editMessage" role="status"></p>
-
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <button id="updateBtn" type="submit" style="flex: 1;">Cập nhật</button>
-        </div>
+        <button id="updateBtn" type="submit" style="width: 100%;">Cập nhật</button>
       </form>
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC (Đã tích hợp Xử lý Supabase, Xem thêm, Streak) -->
   <script>
     const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
     const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
@@ -348,7 +277,6 @@
       currentEditingPostId = null;
     }
 
-    // Hàm render bài viết (Bao gồm chức năng Tự động tạo nút Xem thêm)
     function renderPosts(posts) {
       const container = $("posts");
       container.replaceChildren();
@@ -359,140 +287,4 @@
       }
 
       posts.forEach(post => {
-        const card = document.createElement("article");
-        card.className = "post";
-
-        const category = document.createElement("span");
-        category.className = "post-category";
-        category.textContent = post.category;
-
-        const title = document.createElement("h2");
-        title.textContent = post.title;
-
-        const meta = document.createElement("p");
-        meta.className = "meta";
-        meta.textContent = post.author_name + " · " + formatDate(post.created_at);
-
-        const content = document.createElement("div");
-        content.className = "post-content";
-        content.textContent = post.content;
-
-        // TẠO NÚT XEM THÊM NẾU BÀI VIẾT DÀI (Tự động tính toán)
-        let readMoreBtn = null;
-        if (post.content.length > 250) { 
-          readMoreBtn = document.createElement("button");
-          readMoreBtn.type = "button";
-          readMoreBtn.className = "read-more-btn";
-          readMoreBtn.textContent = "Đọc tiếp ⬇️";
-
-          readMoreBtn.addEventListener("click", () => {
-            content.classList.toggle("expanded");
-            readMoreBtn.textContent = content.classList.contains("expanded") ? "Thu gọn ⬆️" : "Đọc tiếp ⬇️";
-          });
-        }
-
-        const actions = document.createElement("div");
-        actions.className = "post-actions";
-
-        // NÚT THẮP LỬA (STREAK)
-        const streakBtn = document.createElement("button");
-        streakBtn.type = "button";
-        streakBtn.className = "button-streak";
-        const currentLikes = post.likes || 0;
-        streakBtn.textContent = `🔥 Thắp lửa (${currentLikes})`;
-        
-        streakBtn.addEventListener("click", async () => {
-          const newLikes = (post.likes || 0) + 1;
-          streakBtn.textContent = `🔥 Thắp lửa (${newLikes})`;
-          post.likes = newLikes;
-          await db.from("posts").update({ likes: newLikes }).eq("id", post.id);
-        });
-
-        // NÚT SỬA & XÓA
-        const editBtn = document.createElement("button");
-        editBtn.type = "button";
-        editBtn.style.background = "#E8E5D8";
-        editBtn.style.color = "#555A4F";
-        editBtn.textContent = "✏️ Sửa";
-        editBtn.addEventListener("click", () => openEditModal(post));
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.type = "button";
-        deleteBtn.textContent = "🗑️ Xóa";
-        deleteBtn.className = "button-danger";
-        deleteBtn.addEventListener("click", async () => {
-          if (!confirm("Xóa bài viết này nhé?")) return;
-          deleteBtn.textContent = "Đang xóa...";
-          await db.from("posts").delete().eq("id", post.id);
-          await loadPosts();
-        });
-
-        actions.append(streakBtn, editBtn, deleteBtn);
-        
-        // Lắp ráp bài viết
-        card.append(category, title, meta, content);
-        if (readMoreBtn) card.appendChild(readMoreBtn);
-        card.appendChild(actions);
-
-        container.appendChild(card);
-      });
-    }
-
-    async function loadPosts() {
-      $("loading").textContent = "Đang tải những trang văn...";
-      const category = $("filter").value;
-      let query = db.from("posts").select("*").order("created_at", { ascending: false }).limit(50);
-      if (category) query = query.eq("category", category);
-      
-      const { data } = await query;
-      $("loading").textContent = "";
-      renderPosts(data || []);
-    }
-
-    // GỬI BÀI VIẾT MỚI
-    $("postForm").addEventListener("submit", async event => {
-      event.preventDefault();
-      const payload = {
-        author_name: $("author").value.trim(),
-        title: $("title").value.trim(),
-        category: $("category").value,
-        content: $("content").value.trim()
-      };
-
-      const btn = $("submitBtn");
-      btn.disabled = true; btn.textContent = "Đang gửi...";
-      
-      const { error } = await db.from("posts").insert(payload);
-      
-      btn.disabled = false; btn.textContent = "Đăng bài công khai";
-      if (error) return showMessage("Lỗi: " + error.message, "error");
-      
-      showMessage("Đăng bài thành công! 🌷", "success");
-      $("postForm").reset();
-      await loadPosts();
-    });
-
-    // CẬP NHẬT BÀI VIẾT SAU KHI SỬA (Đã fix lỗi không load lại)
-    $("editForm").addEventListener("submit", async event => {
-      event.preventDefault();
-      const payload = {
-        title: $("editTitle").value.trim(),
-        category: $("editCategory").value,
-        content: $("editContent").value.trim()
-      };
-
-      const btn = $("updateBtn");
-      btn.disabled = true; btn.textContent = "Đang lưu...";
-      
-      await db.from("posts").update(payload).eq("id", currentEditingPostId);
-      
-      btn.disabled = false; btn.textContent = "Cập nhật";
-      await loadPosts();
-      closeEditModal();
-    });
-
-    $("filter").addEventListener("change", loadPosts);
-    loadPosts(); // Chạy ngay khi mở web
-  </script>
-</body>
-</html>
+        const card = document.createElement
