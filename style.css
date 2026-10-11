@@ -1,3 +1,36 @@
+/* Ghim chặt thanh header lên đầu trang không bao giờ trôi đi */
+.nnvc-global-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(255, 252, 246, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border, #E7E0D3);
+  box-shadow: 0 4px 20px rgba(88, 99, 77, 0.05);
+  box-sizing: border-box;
+}
+
+.nnvc-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #657B5D;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* Đẩy phần nội dung trang xuống một chút để không bị thanh header che mất dòng đầu */
+body {
+  padding-top: 60px; 
+}
 /* ===== NHAT NHANH VAN CHUONG ===== */
 :root {
     --cream: #F8F3E9;
