@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -12,71 +13,20 @@
     :root {
       --cream: #F9F7F1;
       --white: #FFFFFF;
-      --green-light: #E8F0E1;
-      --green: #C5D8B8;
       --green-dark: #7A9B76;
       --ink: #555A4F;
       --muted: #959C8D;
     }
-
     body {
-      margin: 0;
-      font-family: 'Nunito', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      line-height: 1.8;
-      padding: 20px;
+      margin: 0; font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--ink); line-height: 1.8; padding: 20px;
     }
-
     h1, h2, .back-btn { font-family: 'Quicksand', sans-serif; }
-
-    main {
-      max-width: 800px;
-      margin: 20px auto;
-      background: var(--white);
-      padding: 40px;
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(122, 155, 118, .08);
-    }
-
-    .back-btn {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: var(--green-dark);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 16px;
-    }
-    
-    .back-btn:hover { text-decoration: underline; }
-
-    #post-title {
-      color: var(--green-dark);
-      font-size: 32px;
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-
-    #post-meta {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #E8E5D8;
-    }
-
-    #post-content {
-      white-space: pre-wrap; 
-      font-size: 16px;
-      color: var(--ink);
-    }
-
+    main { max-width: 800px; margin: 20px auto; background: var(--white); padding: 40px; border-radius: 24px; box-shadow: 0 10px 30px rgba(122, 155, 118, .08); }
+    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--green-dark); text-decoration: none; font-weight: 700; font-size: 16px; }
+    #post-title { color: var(--green-dark); font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+    #post-meta { color: var(--muted); font-size: 14px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #E8E5D8; }
+    #post-content { white-space: pre-wrap; font-size: 16px; color: var(--ink); }
     #loading { text-align: center; color: var(--green-dark); font-style: italic; }
-
-    @media (max-width: 600px) {
-      main { padding: 25px; }
-      #post-title { font-size: 26px; }
-    }
   </style>
 </head>
 <body>
@@ -96,32 +46,24 @@
     const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
     const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('id');
 
     async function loadFullPost() {
-      if (!postId) {
-        document.getElementById("loading").textContent = "Không tìm thấy bài viết!";
-        return;
-      }
-
+      if (!postId) return document.getElementById("loading").textContent = "Không tìm thấy bài viết!";
+      
       const { data: post, error } = await db.from("posts").select("*").eq("id", postId).single();
-
-      if (error || !post) {
-        document.getElementById("loading").textContent = "Bài viết đã bị xóa hoặc không tồn tại.";
-        return;
-      }
+      
+      if (error || !post) return document.getElementById("loading").textContent = "Bài viết đã bị xóa.";
 
       document.getElementById("loading").style.display = "none";
       document.getElementById("article-container").style.display = "block";
-      
       document.getElementById("post-title").textContent = post.title;
+      
       const dateStr = new Date(post.created_at).toLocaleString("vi-VN", { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
-      document.getElementById("post-meta").textContent = `Đăng bởi ${post.author_name} · Lên bài lúc ${dateStr} · Thể loại: ${post.category}`;
+      document.getElementById("post-meta").textContent = `Đăng bởi ${post.author_name} · Lúc ${dateStr}`;
       document.getElementById("post-content").textContent = post.content;
     }
-
     loadFullPost();
   </script>
 </body>
