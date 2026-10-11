@@ -1,3 +1,4 @@
+
 /* Nhặt Nhạnh Văn Chương — Bản Fix Cố Định Lỗi Đăng Bài & Lọc Chuyên Mục */
 const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
@@ -203,3 +204,58 @@ async function saveEdit() {
       content: document.getElementById('nnvcEditContent').value.trim() 
     }).eq('id', currentEditingPostId);
     if (error) throw error;
+    document.getElementById('nnvcEditModal').classList.remove('active');
+    await loadCategory(); 
+  } catch (error) { alert("Lỗi khi lưu: " + error.message); } 
+  finally { btn.textContent = "Lưu lại thay đổi"; btn.disabled = false; }
+}
+
+document.addEventListener('DOMContentLoaded', () => { 
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  loadHome(); 
+  loadCategory(); 
+
+  // LẮNG NGHE SỰ KIỆN ĐĂNG BÀI AN TOÀN TRÊN MỌI TRANG
+  const postForm = document.getElementById('postForm');
+  if (postForm) {
+    postForm.onsubmit = async function(e) {
+      e.preventDefault(); 
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('message');
+      btn.disabled = true; btn.textContent = "Đang đăng...";
+      
+      const payload = {
+        author_name: document.getElementById('author').value.trim() || "Ẩn danh",
+        title: document.getElementById('title').value.trim(),
+        category: document.getElementById('category').value,
+        content: document.getElementById('content').value.trim()
+      };
+      
+      try {
+        const { error } = await supabaseClient.from('posts').insert([payload]);
+        if (error) throw error; 
+        
+        msg.textContent = "Đăng bài thành công! 🌷";
+        msg.className = "success";
+        postForm.reset();
+        
+        // Nếu đang đứng ở trang hiển thị bài viết thì load lại luôn
+        await loadCategory(); 
+      } catch (error) {
+        msg.textContent = "Lỗi đăng bài: " + error.message;
+        msg.className = "error";
+        alert("Lỗi đăng bài: " + error.message);
+      } finally {
+        btn.disabled = false; btn.textContent = "Đăng bài công khai";
+      }
+    };
+  }
+
+  const filterSelect = document.getElementById('filter');
+  if (filterSelect) filterSelect.addEventListener('change', loadCategory);
+
+  setTimeout(() => {
+    const saveEditBtn = document.getElementById('nnvcSaveEditBtn');
+    if (saveEditBtn) saveEditBtn.addEventListener('click', saveEdit);
+  }, 500);
+});
