@@ -1,5 +1,5 @@
 
-/* Nhặt Nhạnh Văn Chương — Bản Fix Cố Định Lỗi Đăng Bài & Lọc Chuyên Mục */
+/* Nhặt Nhạnh Văn Chương — Bản posts.js chuẩn sạch không lỗi */
 const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
@@ -24,19 +24,19 @@ nnvcStyle.textContent = `
   .nnvc-read-more { display: inline-block; color: #607a5a; font-weight: bold; text-decoration: none; font-size: 14px; margin-top: 5px; margin-bottom: 15px; }
   .nnvc-read-more:hover { text-decoration: underline; }
   .nnvc-actions { margin-top: 10px; display: flex; gap: 8px; }
-  .nnvc-actions button { padding: 6px 14px; font-size: 13px; border: none; border-radius: 15px; cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: bold; transition: 0.2s;}
+  .nnvc-actions button { padding: 6px 14px; font-size: 13px; border: none; border-radius: 50px; cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: bold; transition: 0.2s;}
   .nnvc-actions button:hover { opacity: 0.8; transform: translateY(-1px); }
   .btn-edit { background: #E8E5D8; color: #555A4F; }
   .btn-del { background: #E29595; color: white; }
   .nnvc-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; padding: 15px; }
   .nnvc-modal.active { display: flex; }
-  .nnvc-modal-content { background: white; padding: 25px; border-radius: 20px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+  .nnvc-modal-content { background: white; padding: 25px; border-radius: 28px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
   .nnvc-modal-content h3 { margin-top: 0; color: #7A9B76; font-size: 22px; font-family: 'Quicksand', sans-serif;}
-  .nnvc-modal-content input, .nnvc-modal-content select, .nnvc-modal-content textarea { width: 100%; margin-bottom: 15px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 15px; background: #FAFAFA; }
+  .nnvc-modal-content input, .nnvc-modal-content select, .nnvc-modal-content textarea { width: 100%; margin-bottom: 15px; padding: 12px; border: 1px solid #ddd; border-radius: 20px; font-family: inherit; font-size: 15px; background: #FAFAFA; }
   .nnvc-modal-content textarea { height: 200px; resize: vertical; }
   .nnvc-modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
-  .nnvc-btn-save { background: #7A9B76; color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
-  .nnvc-btn-cancel { background: #E8E5D8; color: #555A4F; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
+  .nnvc-btn-save { background: #7A9B76; color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+  .nnvc-btn-cancel { background: #E8E5D8; color: #555A4F; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; }
 `;
 document.head.appendChild(nnvcStyle);
 
@@ -80,7 +80,7 @@ function renderCards(posts, container, isHome = false) {
     const formattedContent = esc(p.content).replace(/\n/g, '<br>');
     const article = document.createElement('article');
     article.className = 'nnvc-post';
-    
+
     if (isHome) {
       article.innerHTML = `
         <h3><a href="chi-tiet.html?id=${p.id}" style="color:inherit;text-decoration:none">${esc(p.title)}</a></h3>
@@ -117,7 +117,7 @@ function renderCards(posts, container, isHome = false) {
       delBtn.onclick = async () => {
         if (!confirm("Chắc chắn xóa bài viết này chứ?")) return;
         await supabaseClient.from('posts').delete().eq('id', p.id);
-        await loadCategory();
+        if(typeof loadCategory === 'function') loadCategory();
       };
 
       actions.append(streakBtn, editBtn, delBtn);
@@ -127,7 +127,6 @@ function renderCards(posts, container, isHome = false) {
   });
 }
 
-// HÀM LỌC CHÍNH XÁC TUYỆT ĐỐI KHÔNG BỊ LẪN LỘN
 async function fetchPosts(category, limit = 100) { 
   let q = supabaseClient.from('posts').select('*').order('created_at', { ascending: false }).limit(limit); 
   if (category) {
@@ -155,10 +154,8 @@ async function loadHome() {
 
 async function loadCategory() { 
   let file = location.pathname.split('/').pop() || 'index.html'; 
+  let category = NNVC_CATEGORIES[file]; 
   
-  let category = NNVC_CATEGORIES[file];
-  
-  // Kiểm tra an toàn nếu đang ở trang chuyên mục con
   const feedSection = document.querySelector('.nnvc-category-feed');
   if (feedSection && feedSection.hasAttribute('data-category')) {
     category = feedSection.getAttribute('data-category');
@@ -205,7 +202,7 @@ async function saveEdit() {
     }).eq('id', currentEditingPostId);
     if (error) throw error;
     document.getElementById('nnvcEditModal').classList.remove('active');
-    await loadCategory(); 
+    if(typeof loadCategory === 'function') loadCategory(); 
   } catch (error) { alert("Lỗi khi lưu: " + error.message); } 
   finally { btn.textContent = "Lưu lại thay đổi"; btn.disabled = false; }
 }
@@ -215,14 +212,15 @@ document.addEventListener('DOMContentLoaded', () => {
   loadHome(); 
   loadCategory(); 
 
-  // LẮNG NGHE SỰ KIỆN ĐĂNG BÀI AN TOÀN TRÊN MỌI TRANG
   const postForm = document.getElementById('postForm');
   if (postForm) {
     postForm.onsubmit = async function(e) {
       e.preventDefault(); 
       const btn = document.getElementById('submitBtn');
       const msg = document.getElementById('message');
-      btn.disabled = true; btn.textContent = "Đang đăng...";
+      
+      btn.disabled = true; 
+      btn.textContent = "Đang đăng...";
       
       const payload = {
         author_name: document.getElementById('author').value.trim() || "Ẩn danh",
@@ -239,14 +237,14 @@ document.addEventListener('DOMContentLoaded', () => {
         msg.className = "success";
         postForm.reset();
         
-        // Nếu đang đứng ở trang hiển thị bài viết thì load lại luôn
-        await loadCategory(); 
+        try { if(typeof loadCategory === 'function') loadCategory(); } catch(err) {}
+        
       } catch (error) {
         msg.textContent = "Lỗi đăng bài: " + error.message;
         msg.className = "error";
-        alert("Lỗi đăng bài: " + error.message);
       } finally {
-        btn.disabled = false; btn.textContent = "Đăng bài công khai";
+        btn.disabled = false; 
+        btn.textContent = "Đăng bài công khai";
       }
     };
   }
@@ -259,12 +257,3 @@ document.addEventListener('DOMContentLoaded', () => {
     if (saveEditBtn) saveEditBtn.addEventListener('click', saveEdit);
   }, 500);
 });
-<!-- THANH HEADER CỐ ĐỊNH LUÔN HIỆN Ở GÓC TRÁI -->
-<header class="nnvc-global-header">
-  <a href="index.html" class="nnvc-brand-logo">
-    <span class="icon">📖</span>
-    <span>Nhặt Nhạnh Văn Chương</span>
-  </a>
-  <!-- Nếu mày có các nút menu phụ bên phải thì nhét vào đây, không thì thôi -->
-</header>
-
