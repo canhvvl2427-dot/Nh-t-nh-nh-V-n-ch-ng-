@@ -1020,3 +1020,32 @@ input[type="button"],
 .nnvc-btn-cancel {
   border-radius: 50px !important; /* Bo tròn hoàn toàn dạng viên thuốc hoặc góc cong mềm mại */
 }
+/* Thanh header dính chặt trên cùng màn hình không bao giờ biến mất */
+.nnvc-global-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: rgba(255, 252, 246, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border, #E7E0D3);
+  box-shadow: 0 4px 20px rgba(88, 99, 77, 0.05);
+}
+
+.nnvc-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--green-dark, #657B5D);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.nnvc-brand-logo span.icon {
+  font-size: 22px;
+}
