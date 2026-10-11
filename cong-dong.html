@@ -6,194 +6,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cộng đồng văn học | Nhặt Nhạnh Văn Chương</title>
 
-  <!-- Import phông chữ tròn mềm mại -->
+  <!-- Phông chữ -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Thư viện Supabase bắt buộc phải có -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * { box-sizing: border-box; }
-
-    :root {
-      /* Màu pastel nhẹ nhàng */
-      --cream: #F9F7F1;
-      --white: #FFFFFF;
-      --green-light: #E8F0E1;
-      --green: #C5D8B8;
-      --green-dark: #7A9B76;
-      --ink: #555A4F;
-      --muted: #959C8D;
-      --border: #E8E5D8;
-      --shadow: 0 10px 30px rgba(122, 155, 118, .08);
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Nunito', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      line-height: 1.7;
-    }
-
-    h1, h2, h3, button, select, input {
-      font-family: 'Quicksand', sans-serif;
-    }
-
-    header {
-      background: var(--white);
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    nav {
-      max-width: 900px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    nav a {
-      color: var(--green-dark);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    main {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
-
-    .panel, .post {
-      background: var(--white);
-      border: none;
-      border-radius: 24px;
-      padding: 30px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow);
-    }
-
-    .hero { text-align: center; margin-bottom: 40px; }
-    h1 { color: var(--green-dark); font-size: 32px; margin: 0 0 10px; }
-    h2 { color: var(--green-dark); margin-top: 0; }
-    .muted { color: var(--muted); font-size: 14px; }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 14px 16px;
-      margin: 8px 0 20px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: #FAFAFA;
-      font-size: 15px;
-    }
-
-    textarea { min-height: 160px; resize: vertical; }
-
-    button {
-      border: none;
-      background: var(--green-dark);
-      color: white;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 12px 24px;
-      border-radius: 30px;
-      cursor: pointer;
-    }
-    button:hover { background: #6A8A66; }
-
-    .post-category {
-      display: inline-block;
-      background: var(--green-light);
-      color: var(--green-dark);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .post h2 { margin: 0 0 8px; font-size: 22px; }
-    .post .meta { margin: 0 0 16px; font-size: 13px; color: var(--muted); }
-
-    /* LÀM CHO BÀI VĂN BỊ CẮT NGẮN */
-    .post-content {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      display: -webkit-box;
-      -webkit-line-clamp: 4; /* Giới hạn 4 dòng */
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      margin-bottom: 15px;
-      color: var(--ink);
-    }
-
-    /* LINK ĐỌC BÀI CHUYỂN TRANG */
-    .read-more-link {
-      color: var(--green-dark);
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 14px;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
-    .read-more-link:hover { text-decoration: underline; }
-
-    .post-actions {
-      display: flex; gap: 10px; justify-content: flex-end;
-      margin-top: 10px; padding-top: 16px; border-top: 1px dashed var(--border);
-    }
-    .post-actions button { padding: 8px 16px; font-size: 13px; }
-    .button-danger { background: #E29595; }
-    .button-streak { background: #E8A598; }
-
-    #message { white-space: pre-wrap; font-weight: bold; margin-top: 10px;}
-    .error { color: #D47777; }
-    .success { color: var(--green-dark); }
-
-    /* BẢNG CHỈNH SỬA */
-    .modal {
-      display: none; position: fixed; inset: 0; background: rgba(85, 90, 79, 0.4);
-      z-index: 1000; align-items: center; justify-content: center; padding: 16px;
-    }
-    .modal.active { display: flex; }
-    .modal-content {
-      background: var(--white); border-radius: 24px; padding: 30px;
-      width: min(700px, 100%); max-height: 90vh; overflow-y: auto;
-    }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-close {
-      background: #F0F0F0; color: #666; width: 36px; height: 36px; padding: 0;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    }
+    body { background: #F9F7F1; font-family: 'Nunito', sans-serif; color: #555A4F; margin: 0; }
+    header { background: white; border-bottom: 1px solid #E8E5D8; padding: 15px 20px; position: sticky; top: 0; z-index: 100; }
+    h1, h2, label, button, select, input { font-family: 'Quicksand', sans-serif; }
+    .container { max-width: 800px; margin: 40px auto; padding: 0 16px; }
+    .form-box { background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(122,155,118,0.08); margin-bottom: 40px; }
+    input, select, textarea { width: 100%; padding: 12px; margin: 8px 0 20px; border: 1px solid #E8E5D8; border-radius: 12px; background: #FAFAFA; font-family: 'Nunito', sans-serif; font-size: 15px; box-sizing: border-box; }
+    textarea { min-height: 150px; resize: vertical; }
+    button[type="submit"] { background: #7A9B76; color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 15px; width: 100%; }
   </style>
 </head>
 <body>
+
   <header>
-    <nav>
-      <strong>🌿 Nhặt Nhạnh Văn Chương</strong>
-      <a href="index.html">Về trang chủ ↗</a>
-    </nav>
+    <div style="max-width: 900px; margin: auto; display: flex; justify-content: space-between;">
+      <strong style="color: #7A9B76; font-size: 18px;">🌿 Nhặt Nhạnh Văn Chương</strong>
+      <a href="index.html" style="color: #7A9B76; text-decoration: none; font-weight: bold;">Về trang chủ ↗</a>
+    </div>
   </header>
 
-  <main>
-    <div class="hero">
-      <h1>Góc nhỏ văn chương 🌷</h1>
-      <p class="muted">Nơi chậm rãi học, dịu dàng viết và sâu sắc cảm nhận.</p>
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="color: #7A9B76; font-size: 32px; margin-bottom: 10px;">Góc nhỏ văn chương 🌷</h1>
+      <p style="color: #959C8D;">Nơi chậm rãi học, dịu dàng viết và sâu sắc cảm nhận.</p>
     </div>
 
-    <section class="panel">
-      <h2>✍️ Chia sẻ bài viết</h2>
+    <!-- KHU VỰC FORM ĐĂNG BÀI -->
+    <section class="form-box">
+      <h2 style="color: #7A9B76; margin-top: 0;">✍️ Chia sẻ bài viết</h2>
+      
       <form id="postForm">
-        <label>Tên hiển thị</label>
+        <label style="font-weight: bold;">Tên hiển thị</label>
         <input id="author" maxlength="60" placeholder="Ví dụ: Một người yêu văn" required>
-        <label>Tiêu đề bài viết</label>
+
+        <label style="font-weight: bold;">Tiêu đề bài viết</label>
         <input id="title" maxlength="200" placeholder="Nhập tiêu đề..." required>
-        <label>Chọn mục</label>
+
+        <label style="font-weight: bold;">Chọn chuyên mục</label>
         <select id="category" required>
           <option value="Đọc hiểu">Đọc hiểu</option>
           <option value="Ôn tập văn">Ôn tập văn</option>
@@ -201,15 +57,18 @@
           <option value="Diễn đạt">Diễn đạt</option>
           <option value="Tác phẩm">Tác phẩm</option>
         </select>
-        <label>Nội dung bài viết</label>
+
+        <label style="font-weight: bold;">Nội dung bài viết</label>
         <textarea id="content" maxlength="20000" placeholder="Viết điều bạn muốn chia sẻ..." required></textarea>
+
         <button id="submitBtn" type="submit">Đăng bài công khai</button>
       </form>
-      <p id="message" role="status"></p>
+      <p id="message" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
     </section>
 
+    <!-- KHU VỰC HIỂN THỊ BÀI VIẾT -->
     <section>
-      <select id="filter" style="width: auto; padding: 8px 16px; border-radius: 20px; font-weight: bold; color: var(--green-dark);">
+      <select id="filter" style="width: auto; margin-bottom: 20px; font-weight: bold; color: #7A9B76;">
         <option value="">Tất cả bài viết</option>
         <option value="Đọc hiểu">Đọc hiểu</option>
         <option value="Ôn tập văn">Ôn tập văn</option>
@@ -217,74 +76,15 @@
         <option value="Diễn đạt">Diễn đạt</option>
         <option value="Tác phẩm">Tác phẩm</option>
       </select>
-      <p id="loading" class="muted">Đang tải những trang văn...</p>
-      <div id="posts"></div>
-    </section>
-  </main>
 
-  <div id="editModal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Chỉnh sửa bài viết</h2>
-        <button type="button" class="modal-close" onclick="closeEditModal()">✕</button>
-      </div>
-      <form id="editForm">
-        <label>Tiêu đề</label>
-        <input id="editTitle" required>
-        <label>Mục</label>
-        <select id="editCategory" required>
-          <option value="Đọc hiểu">Đọc hiểu</option>
-          <option value="Ôn tập văn">Ôn tập văn</option>
-          <option value="Văn mẫu">Văn mẫu</option>
-          <option value="Diễn đạt">Diễn đạt</option>
-          <option value="Tác phẩm">Tác phẩm</option>
-        </select>
-        <label>Nội dung</label>
-        <textarea id="editContent" required></textarea>
-        <p id="editMessage" role="status"></p>
-        <button id="updateBtn" type="submit" style="width: 100%;">Cập nhật</button>
-      </form>
-    </div>
+      <p id="loading" style="color: #959C8D; font-style: italic;">Đang tải những trang văn...</p>
+      
+      <!-- posts.js sẽ nhét bài viết vào đây -->
+      <div id="posts" class="nnvc-posts"></div> 
+    </section>
   </div>
 
-  <script>
-    const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const $ = id => document.getElementById(id);
-    let currentEditingPostId = null;
-
-    function showMessage(text, type = "") {
-      $("message").textContent = text;
-      $("message").className = type;
-    }
-
-    function formatDate(value) {
-      return new Date(value).toLocaleString("vi-VN", { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
-    }
-
-    function openEditModal(post) {
-      currentEditingPostId = post.id;
-      $("editTitle").value = post.title;
-      $("editCategory").value = post.category;
-      $("editContent").value = post.content;
-      $("editMessage").textContent = "";
-      $("editModal").classList.add("active");
-    }
-
-    function closeEditModal() {
-      $("editModal").classList.remove("active");
-      currentEditingPostId = null;
-    }
-
-    function renderPosts(posts) {
-      const container = $("posts");
-      container.replaceChildren();
-
-      if (!posts.length) {
-        container.innerHTML = '<p class="muted" style="text-align:center;">Chưa có bài viết nào ở đây cả 🌷</p>';
-        return;
-      }
-
-      posts.forEach(post => {
-        const card = document.createElement
+  <!-- NỐI VỚI FILE POSTS.JS XỊN CỦA MÀY -->
+  <script src="posts.js"></script>
+</body>
+</html>
