@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -109,9 +108,82 @@
       overflow-wrap: anywhere;
     }
 
+    .post-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 14px;
+    }
+
+    .post-actions button {
+      width: auto;
+      margin: 0;
+      padding: 8px 16px;
+      flex: 0 0 auto;
+    }
+
+    .button-danger {
+      background: #c85a54;
+    }
+
+    .button-secondary {
+      background: #8a8a8a;
+    }
+
     #message { white-space: pre-wrap; }
     .error { color: #a13f48; }
     .success { color: #456b45; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 24px;
+      width: min(700px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: var(--green);
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #666;
+      font-size: 24px;
+      width: auto;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+    }
 
     footer {
       text-align: center;
@@ -122,46 +194,75 @@
 
     @media (max-width: 600px) {
       .hero, .panel, .post { padding: 18px; }
+      .post-actions {
+        flex-direction: column;
+      }
+      .post-actions button {
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
-<header>
-  <nav>
-    <strong>🌿 Nhặt Nhạnh Văn Chương</strong>
-    <a href="index.html">← Về trang chủ</a>
-  </nav>
-</header>
+  <header>
+    <nav>
+      <strong>🌿 Nhặt Nhạnh Văn Chương</strong>
+      <a href="index.html">← Về trang chủ</a>
+    </nav>
+  </header>
 
-<main>
-  <section class="hero">
-    <h1>Góc nhỏ văn chương 🌷</h1>
-    <p>
-      Nơi mọi người cùng chia sẻ bài văn, kiến thức và những
-      cảm nhận của mình về văn học.
-    </p>
-    <p class="muted">
-      Bài đăng sẽ hiển thị công khai. Đừng chia sẻ thông tin cá nhân
-      hoặc đăng nội dung không thuộc quyền sử dụng của bạn.
-    </p>
-  </section>
+  <main>
+    <section class="hero">
+      <h1>Góc nhỏ văn chương 🌷</h1>
+      <p>
+        Nơi mọi người cùng chia sẻ bài văn, kiến thức và những
+        cảm nhận của mình về văn học.
+      </p>
+      <p class="muted">
+        Bài đăng sẽ hiển thị công khai. Đừng chia sẻ thông tin cá nhân
+        hoặc đăng nội dung không thuộc quyền sử dụng của bạn.
+      </p>
+    </section>
 
-  <section class="panel">
-    <h2>✍️ Chia sẻ bài viết</h2>
+    <section class="panel">
+      <h2>✍️ Chia sẻ bài viết</h2>
 
-    <form id="postForm">
-      <label for="author">Tên hiển thị</label>
-      <input id="author" maxlength="60"
-        placeholder="Ví dụ: Một người yêu văn"
-        required>
+      <form id="postForm">
+        <label for="author">Tên hiển thị</label>
+        <input id="author" maxlength="60"
+          placeholder="Ví dụ: Một người yêu văn"
+          required>
 
-      <label for="title">Tiêu đề bài viết</label>
-      <input id="title" maxlength="200"
-        placeholder="Nhập tiêu đề..." required>
+        <label for="title">Tiêu đề bài viết</label>
+        <input id="title" maxlength="200"
+          placeholder="Nhập tiêu đề..." required>
 
-      <label for="category">Chọn mục</label>
-      <select id="category" required>
+        <label for="category">Chọn mục</label>
+        <select id="category" required>
+          <option value="Đọc hiểu">Đọc hiểu</option>
+          <option value="Ôn tập văn">Ôn tập văn</option>
+          <option value="Văn mẫu">Văn mẫu</option>
+          <option value="Diễn đạt">Diễn đạt</option>
+          <option value="Tác phẩm">Tác phẩm</option>
+        </select>
+
+        <label for="content">Nội dung bài viết</label>
+        <textarea id="content" maxlength="20000"
+          placeholder="Viết điều bạn muốn chia sẻ..." required></textarea>
+
+        <button id="submitBtn" type="submit">Đăng bài công khai</button>
+      </form>
+
+      <p id="message" role="status"></p>
+    </section>
+
+    <section>
+      <h2>📚 Bài viết cộng đồng</h2>
+
+      <label for="filter">Lọc theo mục</label>
+      <select id="filter">
+        <option value="">Tất cả bài viết</option>
         <option value="Đọc hiểu">Đọc hiểu</option>
         <option value="Ôn tập văn">Ôn tập văn</option>
         <option value="Văn mẫu">Văn mẫu</option>
@@ -169,175 +270,288 @@
         <option value="Tác phẩm">Tác phẩm</option>
       </select>
 
-      <label for="content">Nội dung bài viết</label>
-      <textarea id="content" maxlength="20000"
-        placeholder="Viết điều bạn muốn chia sẻ..." required></textarea>
+      <p id="loading" class="muted">Đang tải bài viết...</p>
+      <div id="posts"></div>
+    </section>
+  </main>
 
-      <button id="submitBtn" type="submit">Đăng bài công khai</button>
-    </form>
+  <div id="editModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Chỉnh sửa bài viết</h2>
+        <button type="button" class="modal-close" aria-label="Đóng">✕</button>
+      </div>
 
-    <p id="message" role="status"></p>
-  </section>
+      <form id="editForm">
+        <label for="editTitle">Tiêu đề bài viết</label>
+        <input id="editTitle" maxlength="200" required>
 
-  <section>
-    <h2>📚 Bài viết cộng đồng</h2>
+        <label for="editCategory">Chọn mục</label>
+        <select id="editCategory" required>
+          <option value="Đọc hiểu">Đọc hiểu</option>
+          <option value="Ôn tập văn">Ôn tập văn</option>
+          <option value="Văn mẫu">Văn mẫu</option>
+          <option value="Diễn đạt">Diễn đạt</option>
+          <option value="Tác phẩm">Tác phẩm</option>
+        </select>
 
-    <label for="filter">Lọc theo mục</label>
-    <select id="filter">
-      <option value="">Tất cả bài viết</option>
-      <option value="Đọc hiểu">Đọc hiểu</option>
-      <option value="Ôn tập văn">Ôn tập văn</option>
-      <option value="Văn mẫu">Văn mẫu</option>
-      <option value="Diễn đạt">Diễn đạt</option>
-      <option value="Tác phẩm">Tác phẩm</option>
-    </select>
+        <label for="editContent">Nội dung bài viết</label>
+        <textarea id="editContent" maxlength="20000" required></textarea>
 
-    <p id="loading" class="muted">Đang tải bài viết...</p>
-    <div id="posts"></div>
-  </section>
-</main>
+        <p id="editMessage" role="status"></p>
 
-<footer>
-  Nhặt Nhạnh Văn Chương · Cùng học, cùng viết, cùng trưởng thành.
-</footer>
+        <div class="post-actions">
+          <button id="updateBtn" type="submit">Cập nhật bài viết</button>
+          <button type="button" class="button-secondary" onclick="closeEditModal()">Hủy</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<script>
-  // URL dự án Supabase phải là URL gốc, không thêm /rest/v1/.
-  // Publishable key dùng ở trình duyệt; tuyệt đối không dùng service_role/secret key.
-  const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
+  <footer>
+    Nhặt Nhạnh Văn Chương · Cùng học, cùng viết, cùng trưởng thành.
+  </footer>
 
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+  <script>
+    // URL dự án Supabase phải là URL gốc, không thêm /rest/v1/.
+    const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
-  const $ = id => document.getElementById(id);
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-  function showMessage(text, type = "") {
-    $("message").textContent = text;
-    $("message").className = type;
-  }
+    const $ = id => document.getElementById(id);
 
-  function formatDate(value) {
-    return new Date(value).toLocaleString("vi-VN");
-  }
+    let currentEditingPostId = null;
 
-  function renderPosts(posts) {
-    const container = $("posts");
-    container.replaceChildren();
-
-    if (!posts.length) {
-      const empty = document.createElement("p");
-      empty.className = "muted";
-      empty.textContent = "Chưa có bài viết trong mục này.";
-      container.appendChild(empty);
-      return;
+    function showMessage(text, type = "") {
+      $("message").textContent = text;
+      $("message").className = type;
     }
 
-    posts.forEach(post => {
-      const card = document.createElement("article");
-      card.className = "post";
+    function formatDate(value) {
+      return new Date(value).toLocaleString("vi-VN");
+    }
 
-      const category = document.createElement("span");
-      category.className = "post-category";
-      category.textContent = post.category;
+    function openEditModal(post) {
+      currentEditingPostId = post.id;
+      $("editTitle").value = post.title;
+      $("editCategory").value = post.category;
+      $("editContent").value = post.content;
+      $("editMessage").textContent = "";
+      $("editMessage").className = "";
+      $("editModal").classList.add("active");
+      $("editModal").setAttribute("aria-hidden", "false");
+    }
 
-      const title = document.createElement("h2");
-      title.textContent = post.title;
+    function closeEditModal() {
+      $("editModal").classList.remove("active");
+      $("editModal").setAttribute("aria-hidden", "true");
+      currentEditingPostId = null;
+    }
 
-      const meta = document.createElement("p");
-      meta.className = "muted";
-      meta.textContent =
-        "Đăng bởi " + post.author_name +
-        " · " + formatDate(post.created_at);
+    function renderPosts(posts) {
+      const container = $("posts");
+      container.replaceChildren();
 
-      const content = document.createElement("div");
-      content.className = "post-content";
-      content.textContent = post.content;
+      if (!posts.length) {
+        const empty = document.createElement("p");
+        empty.className = "muted";
+        empty.textContent = "Chưa có bài viết trong mục này.";
+        container.appendChild(empty);
+        return;
+      }
 
-      card.append(category, title, meta, content);
-      container.appendChild(card);
+      posts.forEach(post => {
+        const card = document.createElement("article");
+        card.className = "post";
+
+        const category = document.createElement("span");
+        category.className = "post-category";
+        category.textContent = post.category;
+
+        const title = document.createElement("h2");
+        title.textContent = post.title;
+
+        const meta = document.createElement("p");
+        meta.className = "muted";
+        meta.textContent =
+          "Đăng bởi " + post.author_name +
+          " · " + formatDate(post.created_at);
+
+        const content = document.createElement("div");
+        content.className = "post-content";
+        content.textContent = post.content;
+
+        const actions = document.createElement("div");
+        actions.className = "post-actions";
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.textContent = "✏️ Chỉnh sửa";
+        editBtn.addEventListener("click", () => openEditModal(post));
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.textContent = "🗑️ Xóa";
+        deleteBtn.className = "button-danger";
+        deleteBtn.addEventListener("click", async () => {
+          if (!confirm("Bạn có chắc muốn xóa bài viết này không?")) return;
+
+          deleteBtn.disabled = true;
+          deleteBtn.textContent = "Đang xóa...";
+
+          const { error } = await db
+            .from("posts")
+            .delete()
+            .eq("id", post.id);
+
+          if (error) {
+            alert("Xóa bài viết thất bại: " + error.message);
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = "🗑️ Xóa";
+            return;
+          }
+
+          await loadPosts();
+        });
+
+        actions.append(editBtn, deleteBtn);
+        card.append(category, title, meta, content, actions);
+        container.appendChild(card);
+      });
+    }
+
+    async function loadPosts() {
+      $("loading").textContent = "Đang tải bài viết...";
+
+      const category = $("filter").value;
+
+      let query = db
+        .from("posts")
+        .select("id, title, author_name, category, content, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100);
+
+      if (category) {
+        query = query.eq("category", category);
+      }
+
+      const { data, error } = await query;
+
+      $("loading").textContent = "";
+
+      if (error) {
+        $("posts").textContent = "";
+        showMessage("Không tải được bài viết: " + error.message, "error");
+        return;
+      }
+
+      renderPosts(data || []);
+    }
+
+    $("postForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const author_name = $("author").value.trim();
+      const title = $("title").value.trim();
+      const category = $("category").value;
+      const content = $("content").value.trim();
+
+      if (!author_name || !title || !content) {
+        showMessage("Mày nhập đầy đủ các mục trước nhé!", "error");
+        return;
+      }
+
+      const button = $("submitBtn");
+      button.disabled = true;
+      button.textContent = "Đang đăng bài...";
+      showMessage("Đang gửi bài viết...");
+
+      const { error } = await db.from("posts").insert({
+        author_name,
+        title,
+        category,
+        content
+      });
+
+      button.disabled = false;
+      button.textContent = "Đăng bài công khai";
+
+      if (error) {
+        showMessage("Đăng bài chưa thành công: " + error.message, "error");
+        return;
+      }
+
+      showMessage("Đăng bài thành công! 🌷", "success");
+      $("author").value = "";
+      $("title").value = "";
+      $("content").value = "";
+
+      await loadPosts();
     });
-  }
 
-  async function loadPosts() {
-    $("loading").textContent = "Đang tải bài viết...";
+    $("editForm").addEventListener("submit", async event => {
+      event.preventDefault();
 
-    const category = $("filter").value;
+      if (!currentEditingPostId) return;
 
-    let query = db
-      .from("posts")
-      .select("id, title, author_name, category, content, created_at")
-      .order("created_at", { ascending: false })
-      .limit(100);
+      const title = $("editTitle").value.trim();
+      const category = $("editCategory").value;
+      const content = $("editContent").value.trim();
 
-    if (category) {
-      query = query.eq("category", category);
-    }
+      if (!title || !content) {
+        $("editMessage").textContent = "Nhập đầy đủ tiêu đề và nội dung!";
+        $("editMessage").className = "error";
+        return;
+      }
 
-    const { data, error } = await query;
+      const button = $("updateBtn");
+      button.disabled = true;
+      button.textContent = "Đang cập nhật...";
+      $("editMessage").textContent = "Đang cập nhật bài viết...";
+      $("editMessage").className = "";
 
-    $("loading").textContent = "";
+      const { error } = await db
+        .from("posts")
+        .update({
+          title,
+          category,
+          content
+        })
+        .eq("id", currentEditingPostId);
 
-    if (error) {
-      $("posts").textContent = "";
-      showMessage(
-        "Không tải được bài viết: " + error.message,
-        "error"
-      );
-      return;
-    }
+      button.disabled = false;
+      button.textContent = "Cập nhật bài viết";
 
-    renderPosts(data || []);
-  }
+      if (error) {
+        $("editMessage").textContent = "Cập nhật thất bại: " + error.message;
+        $("editMessage").className = "error";
+        return;
+      }
 
-  $("postForm").addEventListener("submit", async event => {
-    event.preventDefault();
+      $("editMessage").textContent = "Cập nhật thành công!";
+      $("editMessage").className = "success";
 
-    const author_name = $("author").value.trim();
-    const title = $("title").value.trim();
-    const category = $("category").value;
-    const content = $("content").value.trim();
-
-    if (!author_name || !title || !content) {
-      showMessage("Mày nhập đầy đủ các mục trước nhé!", "error");
-      return;
-    }
-
-    const button = $("submitBtn");
-    button.disabled = true;
-    button.textContent = "Đang đăng bài...";
-    showMessage("Đang gửi bài viết...");
-
-    const { error } = await db.from("posts").insert({
-      author_name,
-      title,
-      category,
-      content
+      setTimeout(async () => {
+        closeEditModal();
+        await loadPosts();
+      }, 800);
     });
 
-    button.disabled = false;
-    button.textContent = "Đăng bài công khai";
+    document.querySelector(".modal-close").addEventListener("click", closeEditModal);
 
-    if (error) {
-      showMessage(
-        "Đăng bài chưa thành công: " + error.message,
-        "error"
-      );
-      return;
-    }
+    $("editModal").addEventListener("click", event => {
+      if (event.target === $("editModal")) {
+        closeEditModal();
+      }
+    });
 
-    showMessage("Đăng bài thành công! 🌷", "success");
-    $("title").value = "";
-    $("content").value = "";
+    $("filter").addEventListener("change", loadPosts);
 
-    await loadPosts();
-  });
-
-  $("filter").addEventListener("change", loadPosts);
-
-  loadPosts();
-</script>
+    loadPosts();
+  </script>
 </body>
 </html>
