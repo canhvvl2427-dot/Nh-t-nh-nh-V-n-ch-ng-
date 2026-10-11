@@ -1011,3 +1011,13 @@ a {
 .read-more-btn:active {
     transform: none;
 }
+/* Bo tròn tất cả các nút bấm và ô nhập liệu trên web */
+button, 
+input[type="submit"], 
+input[type="button"], 
+.sub-btn, 
+.nnvc-actions button, 
+.nnvc-btn-save, 
+.nnvc-btn-cancel {
+  border-radius: 50px !important; /* Bo tròn hoàn toàn dạng viên thuốc hoặc góc cong mềm mại */
+}
