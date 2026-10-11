@@ -1,5 +1,4 @@
-
-/* Nhặt Nhạnh Văn Chương — Bản Fix Lỗi Đăng Bài & Full Chức Năng */
+/* Nhặt Nhạnh Văn Chương — Bản Nâng cấp Thư mục con (NLXH/NLVH) */
 const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
@@ -13,7 +12,6 @@ const NNVC_CATEGORIES = {
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 1. CHÈN CSS GIAO DIỆN VÀ BẢNG SỬA BÀI
 const nnvcStyle = document.createElement('style');
 nnvcStyle.textContent = `
   .nnvc-community { margin: 30px 0; padding: 24px; background: #fffdf7; border: 1px solid #d9dfd1; border-radius: 18px; color: #344735; }
@@ -24,13 +22,11 @@ nnvcStyle.textContent = `
   .nnvc-body { white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; color: #555A4F; margin-bottom: 15px; line-height: 1.6; }
   .nnvc-read-more { display: inline-block; color: #607a5a; font-weight: bold; text-decoration: none; font-size: 14px; margin-top: 5px; margin-bottom: 15px; }
   .nnvc-read-more:hover { text-decoration: underline; }
-  
   .nnvc-actions { margin-top: 10px; display: flex; gap: 8px; }
   .nnvc-actions button { padding: 6px 14px; font-size: 13px; border: none; border-radius: 15px; cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: bold; transition: 0.2s;}
   .nnvc-actions button:hover { opacity: 0.8; transform: translateY(-1px); }
   .btn-edit { background: #E8E5D8; color: #555A4F; }
   .btn-del { background: #E29595; color: white; }
-  
   .nnvc-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; padding: 15px; }
   .nnvc-modal.active { display: flex; }
   .nnvc-modal-content { background: white; padding: 25px; border-radius: 20px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
@@ -50,8 +46,14 @@ const modalHTML = `
       <input id="nnvcEditTitle" placeholder="Tiêu đề bài viết">
       <select id="nnvcEditCategory">
         <option value="Đọc hiểu">Đọc hiểu</option>
-        <option value="Ôn tập văn">Ôn tập văn</option>
-        <option value="Văn mẫu">Văn mẫu</option>
+        <optgroup label="📚 Ôn tập văn">
+          <option value="Ôn tập văn - Nghị luận văn học">Nghị luận văn học (Ôn tập)</option>
+          <option value="Ôn tập văn - Nghị luận xã hội">Nghị luận xã hội (Ôn tập)</option>
+        </optgroup>
+        <optgroup label="📝 Văn mẫu">
+          <option value="Văn mẫu - Nghị luận văn học">Nghị luận văn học (Văn mẫu)</option>
+          <option value="Văn mẫu - Nghị luận xã hội">Nghị luận xã hội (Văn mẫu)</option>
+        </optgroup>
         <option value="Diễn đạt">Diễn đạt</option>
         <option value="Tác phẩm">Tác phẩm</option>
       </select>
@@ -64,7 +66,6 @@ const modalHTML = `
   </div>
 `;
 
-// 2. CÁC HÀM TIỆN ÍCH VÀ RENDER
 function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function date(v) { try { return new Date(v).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) } catch { return '' } }
 
@@ -74,7 +75,6 @@ function renderCards(posts, container, isHome = false) {
     container.innerHTML = '<p style="text-align:center; color:#788071;">Chưa có bài viết nào ở đây cả 🌷</p>';
     return;
   }
-
   posts.forEach(p => {
     const formattedContent = esc(p.content).replace(/\n/g, '<br>');
     const article = document.createElement('article');
@@ -95,7 +95,6 @@ function renderCards(posts, container, isHome = false) {
         <div class="nnvc-body">${formattedContent}</div>
         <a href="chi-tiet.html?id=${p.id}" class="nnvc-read-more">Đọc bài ➔</a>
       `;
-
       const actions = document.createElement('div');
       actions.className = 'nnvc-actions';
 
@@ -127,10 +126,10 @@ function renderCards(posts, container, isHome = false) {
   });
 }
 
-// 3. TẢI DỮ LIỆU TỪ SUPABASE
+// BÍ QUYẾT Ở ĐÂY: Dùng lệnh .like() để gom bài viết con vào thư mục cha
 async function fetchPosts(category, limit = 100) { 
   let q = supabaseClient.from('posts').select('*').order('created_at', { ascending: false }).limit(limit); 
-  if (category) q = q.eq('category', category); 
+  if (category) q = q.like('category', category + '%'); 
   const { data, error } = await q; 
   if (error) throw error; 
   return data || [];
@@ -173,7 +172,6 @@ async function loadCategory() {
   } 
 }
 
-// 4. CHỈNH SỬA BÀI VIẾT
 let currentEditingPostId = null;
 function openEdit(post) {
   currentEditingPostId = post.id;
@@ -187,70 +185,52 @@ async function saveEdit() {
   if (!currentEditingPostId) return;
   const btn = document.getElementById('nnvcSaveEditBtn');
   btn.textContent = "Đang lưu..."; btn.disabled = true;
-
   try {
     const { error } = await supabaseClient.from('posts').update({ 
       title: document.getElementById('nnvcEditTitle').value.trim(), 
       category: document.getElementById('nnvcEditCategory').value, 
       content: document.getElementById('nnvcEditContent').value.trim() 
     }).eq('id', currentEditingPostId);
-    
     if (error) throw error;
     document.getElementById('nnvcEditModal').classList.remove('active');
     await loadCategory(); 
-  } catch (error) {
-    alert("Lỗi khi lưu: " + error.message);
-  } finally {
-    btn.textContent = "Lưu lại thay đổi"; btn.disabled = false;
-  }
+  } catch (error) { alert("Lỗi khi lưu: " + error.message); } 
+  finally { btn.textContent = "Lưu lại thay đổi"; btn.disabled = false; }
 }
 
-// 5. CHẠY SỰ KIỆN KHI MỞ TRANG
 document.addEventListener('DOMContentLoaded', () => { 
   document.body.insertAdjacentHTML('beforeend', modalHTML);
   loadHome(); 
   loadCategory(); 
 
-  // Lắng nghe Form Đăng Bài
   const postForm = document.getElementById('postForm');
   if (postForm) {
-    // Dùng onsubmit để chặn triệt để F5 bậy bạ của trình duyệt
     postForm.onsubmit = async function(e) {
       e.preventDefault(); 
-      
       const btn = document.getElementById('submitBtn');
       const msg = document.getElementById('message');
-      
       btn.disabled = true; btn.textContent = "Đang đăng...";
-      
       const payload = {
         author_name: document.getElementById('author').value.trim() || "Ẩn danh",
         title: document.getElementById('title').value.trim(),
         category: document.getElementById('category').value,
         content: document.getElementById('content').value.trim()
       };
-
       try {
-        // Gửi mảng [] để chuẩn hóa hoàn toàn dữ liệu đẩy lên
         const { error } = await supabaseClient.from('posts').insert([payload]);
         if (error) throw error; 
-        
         msg.textContent = "Đăng bài thành công! 🌷";
         msg.className = "success";
         postForm.reset();
-        
-        await loadCategory(); // TẢI LẠI TRANG NGAY VÀ LUÔN
-        
+        await loadCategory(); 
       } catch (error) {
         msg.textContent = "Lỗi đăng bài: " + error.message;
         msg.className = "error";
-        alert("Lỗi đăng bài: " + error.message); // Bắn thẳng thông báo ra màn hình nếu kẹt
       } finally {
         btn.disabled = false; btn.textContent = "Đăng bài công khai";
       }
     };
   }
-
   const filterSelect = document.getElementById('filter');
   if (filterSelect) filterSelect.addEventListener('change', loadCategory);
 
