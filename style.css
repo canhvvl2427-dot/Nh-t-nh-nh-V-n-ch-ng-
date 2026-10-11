@@ -1,4 +1,5 @@
-```css
+
+
 /* ===== NHAT NHANH VAN CHUONG ===== */
 :root {
     --cream: #F8F3E9;
@@ -737,7 +738,6 @@ a {
         transition: none !important;
     }
 }
-```
 
 /* THANH TIM KIEM - NHAT NHANH VAN CHUONG */
 .search-section {
@@ -925,6 +925,8 @@ a {
         padding: 22px 16px;
     }
 }
+
+/* COUNTDOWN */
 .countdown {
   max-width: 900px;
   margin: 28px auto;
@@ -953,20 +955,3 @@ a {
   gap: 6px;
   padding: 18px 4px;
   background: #fffdf7;
-  border-radius: 12px;
-}
-
-.countdown-grid strong {
-  font-size: clamp(22px, 5vw, 36px);
-  color: #526b4e;
-}
-
-.countdown-grid span {
-  font-size: 13px;
-  color: #748071;
-}
-
-@media (max-width: 420px) {
-  .countdown-grid { gap: 5px; }
-  .countdown-grid div { padding: 14px 2px; }
-}
