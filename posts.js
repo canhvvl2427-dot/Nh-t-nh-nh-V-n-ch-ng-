@@ -20,12 +20,12 @@ nnvcStyle.textContent = `
   .nnvc-post h3 { margin: 8px 0 4px; color: #405640; font-size: 22px; font-weight: bold; }
   .nnvc-meta { font-size: 13px; color: #788071; margin-bottom: 12px; }
   
-  /* ÉP CẮT 5 DÒNG Ở ĐÂY */
+  /* Cắt chữ và thêm dấy 3 chấm */
   .nnvc-body { 
     white-space: pre-wrap; 
     overflow-wrap: anywhere; 
     display: -webkit-box; 
-    -webkit-line-clamp: 5; 
+    -webkit-line-clamp: 5; /* Số dòng cắt */
     -webkit-box-orient: vertical; 
     overflow: hidden; 
     color: #555A4F;
@@ -46,12 +46,16 @@ function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;
 function date(v) { try { return new Date(v).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) } catch { return '' } }
 
 function card(p) { 
+  // BIẾN XUỐNG DÒNG THÀNH THẺ <BR> ĐỂ CSS CẮT CHỮ HOẠT ĐỘNG
+  const formattedContent = esc(p.content).replace(/\n/g, '<br>');
+
   return `
     <article class="nnvc-post">
       <span class="post-category" style="background:#E8F0E1; color:#7A9B76; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">${esc(p.category)}</span>
       <h3>${esc(p.title)}</h3>
       <p class="nnvc-meta">Đăng bởi ${esc(p.author_name || 'Ẩn danh')} · Lúc ${date(p.created_at)}</p>
-      <div class="nnvc-body">${esc(p.content)}</div>
+      
+      <div class="nnvc-body">${formattedContent}</div>
       <a href="chi-tiet.html?id=${p.id}" class="nnvc-read-more">Đọc bài ➔</a>
     </article>
   `; 
@@ -59,6 +63,7 @@ function card(p) {
 
 function client() { 
   if (!window.supabase) throw Error('Chưa tải được thư viện Supabase. Hãy tải lại trang.'); 
+  if (SUPABASE_KEY === 'DAN_PUBLISHABLE_KEY_CUA_PROJECT_NAY_VAO_DAY') throw Error('Cần điền Publishable key của project hiện tại vào posts.js và cong-dong.html.'); 
   return window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
@@ -75,20 +80,22 @@ async function loadHome() {
   for (const el of document.querySelectorAll('[data-preview-category]')) { 
     try { 
       const ps = await fetchPosts(el.dataset.previewCategory, 3); 
-      el.innerHTML = ps.length ? ps.map(p => `<a href="${esc(el.dataset.previewHref || 'cong-dong.html')}">${esc(p.title)}</a>`).join('') : 'Chưa có bài viết.' 
+      el.innerHTML = ps.length ? ps.map(p => `<a href="${esc(el.dataset.previewHref || 'cong-dong.html')}">${esc(p.title)}</a>`).join('') : 'Chưa có bài viết trong mục này.' 
     } catch (e) { el.textContent = 'Chưa kết nối được kho bài viết.' } 
   }
   for (const el of document.querySelectorAll('[data-home-category]')) { 
     try { 
       const ps = await fetchPosts(el.dataset.homeCategory, 5); 
-      el.innerHTML = ps.length ? ps.map(p => `
+      el.innerHTML = ps.length ? ps.map(p => {
+         const formattedContent = esc(p.content).replace(/\n/g, '<br>');
+         return `
         <article class="nnvc-post">
           <h3><a href="chi-tiet.html?id=${p.id}" style="color:inherit;text-decoration:none">${esc(p.title)}</a></h3>
           <p class="nnvc-meta">${esc(p.author_name || 'Ẩn danh')} · ${date(p.created_at)}</p>
-          <div class="nnvc-body">${esc(p.content)}</div>
+          <div class="nnvc-body">${formattedContent}</div>
           <a href="chi-tiet.html?id=${p.id}" class="nnvc-read-more">Đọc bài ➔</a>
         </article>
-      `).join('') : 'Chưa có bài viết.' 
+      `}).join('') : 'Chưa có bài viết. Hãy bấm “Viết bài” để tự thêm nội dung.' 
     } catch (e) { el.textContent = 'Chưa kết nối được kho bài viết.' } 
   }
 }
@@ -104,7 +111,7 @@ async function loadCategory() {
   const box = section.querySelector('.nnvc-posts'); 
   try { 
     const ps = await fetchPosts(category); 
-    box.innerHTML = ps.length ? ps.map(card).join('') : '<p>Chưa có bài viết trong mục này.</p>';
+    box.innerHTML = ps.length ? ps.map(card).join('') : '<p>Chưa có bài viết trong mục này. Bấm “Viết bài mới” để thêm bài đầu tiên nhé.</p>';
   } catch (e) { 
     box.innerHTML = `<p class="nnvc-error">${esc(e.message)}</p>`;
   } 
