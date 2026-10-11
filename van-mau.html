@@ -1,95 +1,73 @@
-<!DOCTYPE html>
 
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Các bài văn mẫu | Nhặt Nhạnh Văn Chương</title>
-<link href="style.css" rel="stylesheet"/>
-<style>
-        .page-content {
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 24px;
-            color: #52634b;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 24px;
-            color: #58734f;
-            text-decoration: none;
-        }
-
-        .page-heading {
-            background: #e5eddf;
-            border-radius: 24px;
-            padding: 36px 24px;
-            margin-bottom: 30px;
-        }
-
-        .sample-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .sample-card {
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-            background: #fffdf7;
-            border: 1px solid #e9e2d5;
-            border-radius: 20px;
-            color: #52634b;
-            text-decoration: none;
-            transition: transform .2s, box-shadow .2s;
-        }
-
-        .sample-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px #536b4918;
-        }
-
-        .sample-card h2 {
-            font-size: 1.2rem;
-            margin-top: 12px;
-        }
-
-        .sample-card p {
-            color: #81776c;
-            line-height: 1.7;
-        }
-
-        .tag {
-            color: #8b6d74;
-            font-size: .8rem;
-        }
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Các bài văn mẫu | Nhặt Nhạnh Văn Chương</title>
+    <link href="style.css" rel="stylesheet"/>
+    <style>
+        .page-content { max-width: 1000px; margin: 50px auto; padding: 24px; color: #52634b; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #58734f; text-decoration: none; }
+        .page-heading { background: #e5eddf; border-radius: 24px; padding: 36px 24px; margin-bottom: 30px; }
+        
+        /* Giao diện nút chọn mục nhỏ NLVH / NLXH */
+        .sub-category-bar { display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; }
+        .sub-btn { padding: 10px 20px; background: #fffdf7; border: 1px solid #e9e2d5; border-radius: 20px; color: #52634b; text-decoration: none; font-weight: bold; font-family: 'Quicksand', sans-serif; transition: 0.2s; cursor: pointer; }
+        .sub-btn:hover, .sub-btn.active { background: #58734f; color: white; border-color: #58734f; }
 
         @media (max-width: 600px) {
-            .page-content {
-                margin: 20px auto;
-                padding: 16px;
-            }
+            .page-content { margin: 20px auto; padding: 16px; }
         }
     </style>
 </head>
 <body>
 <main class="page-content">
-<a class="back-link" href="index.html">← Về trang chủ</a>
-<header class="page-heading">
-<p>TỦ SÁCH NHỎ</p>
-<h1>Các bài văn mẫu</h1>
-<p>
-                Những bài viết để tham khảo cách nghĩ, cách lập luận
-                và cách cảm nhận vẻ đẹp của văn chương.
-            </p>
-</header><section class="nnvc-community nnvc-category-feed" data-category="Văn mẫu"><h2>Bài viết của bạn</h2><p>Các bài văn mẫu mày tự đăng sẽ hiện tại đây.</p><div aria-live="polite" class="nnvc-posts">Đang tải bài viết...</div><a href="cong-dong.html">＋ Viết bài mới</a></section><footer style="padding: 40px 0; text-align: center;">
-            Gom nhặt con chữ — vun đầy tâm hồn.
-        </footer></main>
+    <a class="back-link" href="index.html">← Về trang chủ</a>
+    
+    <header class="page-heading">
+        <p>TỦ SÁCH NHỎ</p>
+        <h1>Các bài văn mẫu</h1>
+        <p>Những bài viết để tham khảo cách nghĩ, cách lập luận và cách cảm nhận vẻ đẹp của văn chương.</p>
+    </header>
 
+    <!-- NÚT CHỌN 2 MỤC NHỎ -->
+    <div class="sub-category-bar">
+        <button class="sub-btn active" onclick="filterSubCategory('Văn mẫu', this)">Tất cả Văn mẫu</button>
+        <button class="sub-btn" onclick="filterSubCategory('Văn mẫu - Nghị luận văn học', this)">📚 Nghị luận văn học</button>
+        <button class="sub-btn" onclick="filterSubCategory('Văn mẫu - Nghị luận xã hội', this)">💡 Nghị luận xã hội</button>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="posts.js"></script></body>
+    <!-- KHU VỰC HIỂN THỊ BÀI VIẾT -->
+    <section class="nnvc-community nnvc-category-feed" data-category="Văn mẫu">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin:0;">Bài viết</h2>
+            <a href="cong-dong.html" style="background: #7A9B76; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold;">＋ Viết bài mới</a>
+        </div>
+        <div aria-live="polite" class="nnvc-posts">Đang tải bài viết...</div>
+    </section>
+
+    <footer style="padding: 40px 0; text-align: center;">
+        Gom nhặt con chữ — vun đầy tâm hồn.
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="posts.js"></script>
+<script>
+    // Hàm bấm vào nút chuyển mục nhỏ
+    function filterSubCategory(catName, btnElement) {
+        document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+        
+        const feedSection = document.querySelector('.nnvc-category-feed');
+        if(feedSection) {
+            feedSection.setAttribute('data-category', catName);
+            if(typeof loadCategory === 'function') {
+                loadCategory(); // Gọi lại hàm tải bài viết trong posts.js
+            }
+        }
+    }
+</script>
+</body>
 </html>
