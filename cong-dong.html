@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -120,7 +121,6 @@
       margin: 0;
       padding: 8px 16px;
       flex: 0 0 auto;
-      font-size: 14px;
     }
 
     .button-danger {
@@ -186,15 +186,6 @@
       cursor: pointer;
     }
 
-    .button-group {
-      display: flex;
-      gap: 10px;
-    }
-
-    .button-group button {
-      flex: 1;
-    }
-
     footer {
       text-align: center;
       padding: 25px;
@@ -209,9 +200,6 @@
       }
       .post-actions button {
         width: 100%;
-      }
-      .button-group {
-        flex-direction: column;
       }
     }
   </style>
@@ -288,11 +276,11 @@
     </section>
   </main>
 
-  <div id="editModal" class="modal">
+  <div id="editModal" class="modal" aria-hidden="true">
     <div class="modal-content">
       <div class="modal-header">
         <h2>Chỉnh sửa bài viết</h2>
-        <button type="button" class="modal-close" onclick="closeEditModal()">✕</button>
+        <button type="button" class="modal-close" aria-label="Đóng">✕</button>
       </div>
 
       <form id="editForm">
@@ -313,7 +301,7 @@
 
         <p id="editMessage" role="status"></p>
 
-        <div class="button-group">
+        <div class="post-actions">
           <button id="updateBtn" type="submit">Cập nhật bài viết</button>
           <button type="button" class="button-secondary" onclick="closeEditModal()">Hủy</button>
         </div>
@@ -329,7 +317,10 @@
     const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
     const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
     const $ = id => document.getElementById(id);
 
@@ -352,10 +343,12 @@
       $("editMessage").textContent = "";
       $("editMessage").className = "";
       $("editModal").classList.add("active");
+      $("editModal").setAttribute("aria-hidden", "false");
     }
 
     function closeEditModal() {
       $("editModal").classList.remove("active");
+      $("editModal").setAttribute("aria-hidden", "true");
       currentEditingPostId = null;
     }
 
@@ -384,7 +377,9 @@
 
         const meta = document.createElement("p");
         meta.className = "muted";
-        meta.textContent = "Đăng bởi " + post.author_name + " · " + formatDate(post.created_at);
+        meta.textContent =
+          "Đăng bởi " + post.author_name +
+          " · " + formatDate(post.created_at);
 
         const content = document.createElement("div");
         content.className = "post-content";
@@ -396,26 +391,32 @@
         const editBtn = document.createElement("button");
         editBtn.type = "button";
         editBtn.textContent = "✏️ Chỉnh sửa";
-        editBtn.onclick = () => openEditModal(post);
+        editBtn.addEventListener("click", () => openEditModal(post));
 
         const deleteBtn = document.createElement("button");
         deleteBtn.type = "button";
         deleteBtn.textContent = "🗑️ Xóa";
         deleteBtn.className = "button-danger";
-        deleteBtn.onclick = async () => {
+        deleteBtn.addEventListener("click", async () => {
           if (!confirm("Bạn có chắc muốn xóa bài viết này không?")) return;
+
           deleteBtn.disabled = true;
           deleteBtn.textContent = "Đang xóa...";
 
-          const { error } = await db.from("posts").delete().eq("id", post.id);
+          const { error } = await db
+            .from("posts")
+            .delete()
+            .eq("id", post.id);
+
           if (error) {
-            alert("Xóa thất bại: " + error.message);
+            alert("Xóa bài viết thất bại: " + error.message);
             deleteBtn.disabled = false;
             deleteBtn.textContent = "🗑️ Xóa";
             return;
           }
+
           await loadPosts();
-        };
+        });
 
         actions.append(editBtn, deleteBtn);
         card.append(category, title, meta, content, actions);
@@ -425,6 +426,7 @@
 
     async function loadPosts() {
       $("loading").textContent = "Đang tải bài viết...";
+
       const category = $("filter").value;
 
       let query = db
@@ -438,10 +440,11 @@
       }
 
       const { data, error } = await query;
+
       $("loading").textContent = "";
 
       if (error) {
-        $("posts").innerHTML = "";
+        $("posts").textContent = "";
         showMessage("Không tải được bài viết: " + error.message, "error");
         return;
       }
@@ -468,7 +471,10 @@
       showMessage("Đang gửi bài viết...");
 
       const { error } = await db.from("posts").insert({
-        author_name, title, category, content
+        author_name,
+        title,
+        category,
+        content
       });
 
       button.disabled = false;
@@ -484,9 +490,10 @@
       $("title").value = "";
       $("content").value = "";
 
-      setTimeout(() => loadPosts(), 300);
+      await loadPosts();
     });
 
+    // --- PHẦN CODE ĐÃ ĐƯỢC CHỈNH SỬA ---
     $("editForm").addEventListener("submit", async event => {
       event.preventDefault();
 
@@ -505,17 +512,22 @@
       const button = $("updateBtn");
       button.disabled = true;
       button.textContent = "Đang cập nhật...";
-      $("editMessage").textContent = "Đang cập nhật...";
+      $("editMessage").textContent = "Đang cập nhật bài viết...";
       $("editMessage").className = "";
 
       const { error } = await db
         .from("posts")
-        .update({ title, category, content })
+        .update({
+          title,
+          category,
+          content
+        })
         .eq("id", currentEditingPostId);
 
+      button.disabled = false;
+      button.textContent = "Cập nhật bài viết";
+
       if (error) {
-        button.disabled = false;
-        button.textContent = "Cập nhật bài viết";
         $("editMessage").textContent = "Cập nhật thất bại: " + error.message;
         $("editMessage").className = "error";
         return;
@@ -524,15 +536,18 @@
       $("editMessage").textContent = "Cập nhật thành công!";
       $("editMessage").className = "success";
 
-      // RELOAD LẠI DANH SÁCH BÀI VIẾT NGAY LẬP TỨC
-      setTimeout(() => {
-        closeEditModal();
-        loadPosts();
-      }, 500);
+      // Đợi load lại dữ liệu mới nhất từ Supabase xong mới đóng Modal
+      await loadPosts();
+      closeEditModal();
     });
+    // --- KẾT THÚC PHẦN CHỈNH SỬA ---
+
+    document.querySelector(".modal-close").addEventListener("click", closeEditModal);
 
     $("editModal").addEventListener("click", event => {
-      if (event.target === $("editModal")) closeEditModal();
+      if (event.target === $("editModal")) {
+        closeEditModal();
+      }
     });
 
     $("filter").addEventListener("change", loadPosts);
