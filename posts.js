@@ -1,4 +1,5 @@
-/* Nhặt Nhạnh Văn Chương — Bản Fix Triệt Để Lọc Chuyên Mục Con */
+
+/* Nhặt Nhạnh Văn Chương — Bản posts.js hoàn chỉnh bóc tách tuyệt đối danh mục con */
 const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
@@ -126,13 +127,12 @@ function renderCards(posts, container, isHome = false) {
   });
 }
 
-// HÀM LỌC CHÍNH XÁC: BẤM MỤC NÀO LẤY ĐÚNG MỤC ĐÓ, KHÔNG QUÉT GOM BẬY BẠ
+// HÀM LỌC CHÍNH XÁC TUYỆT ĐỐI THEO TỪNG DANH MỤC CỤ THỂ
 async function fetchPosts(category, limit = 100) { 
   let q = supabaseClient.from('posts').select('*').order('created_at', { ascending: false }).limit(limit); 
   
   if (category) {
-    // Dùng .eq để lọc chính xác tuyệt đối tên danh mục trong Database
-    q = q.eq('category', category);
+    q = q.eq('category', category); // Lọc chính xác 100% không để bị lẫn lộn giữa văn học và xã hội
   }
   
   const { data, error } = await q; 
@@ -213,43 +213,4 @@ async function saveEdit() {
 }
 
 document.addEventListener('DOMContentLoaded', () => { 
-  document.body.insertAdjacentHTML('beforeend', modalHTML);
-  loadHome(); 
-  loadCategory(); 
-
-  const postForm = document.getElementById('postForm');
-  if (postForm) {
-    postForm.onsubmit = async function(e) {
-      e.preventDefault(); 
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('message');
-      btn.disabled = true; btn.textContent = "Đang đăng...";
-      const payload = {
-        author_name: document.getElementById('author').value.trim() || "Ẩn danh",
-        title: document.getElementById('title').value.trim(),
-        category: document.getElementById('category').value,
-        content: document.getElementById('content').value.trim()
-      };
-      try {
-        const { error } = await supabaseClient.from('posts').insert([payload]);
-        if (error) throw error; 
-        msg.textContent = "Đăng bài thành công! 🌷";
-        msg.className = "success";
-        postForm.reset();
-        await loadCategory(); 
-      } catch (error) {
-        msg.textContent = "Lỗi đăng bài: " + error.message;
-        msg.className = "error";
-      } finally {
-        btn.disabled = false; btn.textContent = "Đăng bài công khai";
-      }
-    };
-  }
-  const filterSelect = document.getElementById('filter');
-  if (filterSelect) filterSelect.addEventListener('change', loadCategory);
-
-  setTimeout(() => {
-    const saveEditBtn = document.getElementById('nnvcSaveEditBtn');
-    if (saveEditBtn) saveEditBtn.addEventListener('click', saveEdit);
-  }, 500);
-});
+  document.
