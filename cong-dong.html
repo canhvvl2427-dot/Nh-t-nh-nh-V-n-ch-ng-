@@ -89,6 +89,11 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:active {
+      transform: scale(0.95);
     }
 
     button:disabled {
@@ -104,16 +109,50 @@
       font-size: 13px;
     }
 
+    /* === CSS CHO NÚT XEM THÊM & NỘI DUNG === */
     .post-content {
       white-space: pre-wrap;
       overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 4; /* Chỉ hiện tối đa 4 dòng */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
+
+    .post-content.expanded {
+      -webkit-line-clamp: unset; /* Xóa giới hạn khi bấm xem thêm */
+      display: block;
+    }
+
+    .read-more-btn {
+      background: none;
+      border: none;
+      color: var(--green);
+      font-weight: bold;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 8px;
+      text-align: left;
+      width: auto;
+      font-size: 14px;
+    }
+
+    .read-more-btn:hover {
+      text-decoration: underline;
+    }
+    
+    .read-more-btn:active {
+      transform: none;
+    }
+    /* === HẾT CSS XEM THÊM === */
 
     .post-actions {
       display: flex;
       gap: 10px;
       justify-content: flex-end;
       margin-top: 14px;
+      flex-wrap: wrap;
     }
 
     .post-actions button {
@@ -123,13 +162,9 @@
       flex: 0 0 auto;
     }
 
-    .button-danger {
-      background: #c85a54;
-    }
-
-    .button-secondary {
-      background: #8a8a8a;
-    }
+    .button-danger { background: #c85a54; }
+    .button-secondary { background: #8a8a8a; }
+    .button-streak { background: #e07a5f; }
 
     #message { white-space: pre-wrap; }
     .error { color: #a13f48; }
@@ -146,9 +181,7 @@
       padding: 16px;
     }
 
-    .modal.active {
-      display: flex;
-    }
+    .modal.active { display: flex; }
 
     .modal-content {
       background: var(--white);
@@ -170,10 +203,7 @@
       padding-bottom: 12px;
     }
 
-    .modal-header h2 {
-      margin: 0;
-      color: var(--green);
-    }
+    .modal-header h2 { margin: 0; color: var(--green); }
 
     .modal-close {
       background: transparent;
@@ -195,12 +225,8 @@
 
     @media (max-width: 600px) {
       .hero, .panel, .post { padding: 18px; }
-      .post-actions {
-        flex-direction: column;
-      }
-      .post-actions button {
-        width: 100%;
-      }
+      .post-actions { flex-direction: column; }
+      .post-actions button { width: 100%; }
     }
   </style>
 </head>
@@ -216,28 +242,18 @@
   <main>
     <section class="hero">
       <h1>Góc nhỏ văn chương 🌷</h1>
-      <p>
-        Nơi mọi người cùng chia sẻ bài văn, kiến thức và những
-        cảm nhận của mình về văn học.
-      </p>
-      <p class="muted">
-        Bài đăng sẽ hiển thị công khai. Đừng chia sẻ thông tin cá nhân
-        hoặc đăng nội dung không thuộc quyền sử dụng của bạn.
-      </p>
+      <p>Nơi mọi người cùng chia sẻ bài văn, kiến thức và những cảm nhận của mình về văn học.</p>
+      <p class="muted">Bài đăng sẽ hiển thị công khai. Đừng chia sẻ thông tin cá nhân hoặc đăng nội dung không thuộc quyền sử dụng của bạn.</p>
     </section>
 
     <section class="panel">
       <h2>✍️ Chia sẻ bài viết</h2>
-
       <form id="postForm">
         <label for="author">Tên hiển thị</label>
-        <input id="author" maxlength="60"
-          placeholder="Ví dụ: Một người yêu văn"
-          required>
+        <input id="author" maxlength="60" placeholder="Ví dụ: Một người yêu văn" required>
 
         <label for="title">Tiêu đề bài viết</label>
-        <input id="title" maxlength="200"
-          placeholder="Nhập tiêu đề..." required>
+        <input id="title" maxlength="200" placeholder="Nhập tiêu đề..." required>
 
         <label for="category">Chọn mục</label>
         <select id="category" required>
@@ -249,18 +265,15 @@
         </select>
 
         <label for="content">Nội dung bài viết</label>
-        <textarea id="content" maxlength="20000"
-          placeholder="Viết điều bạn muốn chia sẻ..." required></textarea>
+        <textarea id="content" maxlength="20000" placeholder="Viết điều bạn muốn chia sẻ..." required></textarea>
 
         <button id="submitBtn" type="submit">Đăng bài công khai</button>
       </form>
-
       <p id="message" role="status"></p>
     </section>
 
     <section>
       <h2>📚 Bài viết cộng đồng</h2>
-
       <label for="filter">Lọc theo mục</label>
       <select id="filter">
         <option value="">Tất cả bài viết</option>
@@ -298,7 +311,6 @@
 
         <label for="editContent">Nội dung bài viết</label>
         <textarea id="editContent" maxlength="20000" required></textarea>
-
         <p id="editMessage" role="status"></p>
 
         <div class="post-actions">
@@ -317,13 +329,8 @@
     const SUPABASE_URL = "https://vrlrvknuawnfdsarubjb.supabase.co";
     const SUPABASE_KEY = "sb_publishable_HO4vHnkFM1qw1gUyvUbGag_PtGmvnrC";
 
-    const db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const $ = id => document.getElementById(id);
-
     let currentEditingPostId = null;
 
     function showMessage(text, type = "") {
@@ -377,20 +384,57 @@
 
         const meta = document.createElement("p");
         meta.className = "muted";
-        meta.textContent =
-          "Đăng bởi " + post.author_name +
-          " · " + formatDate(post.created_at);
+        meta.textContent = "Đăng bởi " + post.author_name + " · " + formatDate(post.created_at);
 
         const content = document.createElement("div");
         content.className = "post-content";
         content.textContent = post.content;
 
+        // TẠO NÚT XEM THÊM CHO BÀI VIẾT DÀI (TRÊN 200 KÝ TỰ)
+        let readMoreBtn = null;
+        if (post.content.length > 200) {
+          readMoreBtn = document.createElement("button");
+          readMoreBtn.type = "button";
+          readMoreBtn.className = "read-more-btn";
+          readMoreBtn.textContent = "Xem thêm ⬇️";
+
+          readMoreBtn.addEventListener("click", () => {
+            content.classList.toggle("expanded");
+            if (content.classList.contains("expanded")) {
+              readMoreBtn.textContent = "Thu gọn ⬆️";
+            } else {
+              readMoreBtn.textContent = "Xem thêm ⬇️";
+            }
+          });
+        }
+
         const actions = document.createElement("div");
         actions.className = "post-actions";
 
+        // NÚT STREAK / THẮP LỬA
+        const streakBtn = document.createElement("button");
+        streakBtn.type = "button";
+        streakBtn.className = "button-streak";
+        const currentLikes = post.likes || 0;
+        streakBtn.textContent = `🔥 Thắp lửa (${currentLikes})`;
+        
+        streakBtn.addEventListener("click", async () => {
+          const newLikes = (post.likes || 0) + 1;
+          streakBtn.textContent = `🔥 Thắp lửa (${newLikes})`;
+          post.likes = newLikes;
+
+          const { error } = await db.from("posts").update({ likes: newLikes }).eq("id", post.id);
+
+          if (error) {
+            streakBtn.textContent = `🔥 Thắp lửa (${newLikes - 1})`;
+            post.likes = newLikes - 1;
+            alert("Lỗi thắp lửa: " + error.message);
+          }
+        });
+
         const editBtn = document.createElement("button");
         editBtn.type = "button";
-        editBtn.textContent = "✏️ Chỉnh sửa";
+        editBtn.textContent = "✏️ Sửa";
         editBtn.addEventListener("click", () => openEditModal(post));
 
         const deleteBtn = document.createElement("button");
@@ -399,39 +443,38 @@
         deleteBtn.className = "button-danger";
         deleteBtn.addEventListener("click", async () => {
           if (!confirm("Bạn có chắc muốn xóa bài viết này không?")) return;
-
           deleteBtn.disabled = true;
           deleteBtn.textContent = "Đang xóa...";
 
-          const { error } = await db
-            .from("posts")
-            .delete()
-            .eq("id", post.id);
-
+          const { error } = await db.from("posts").delete().eq("id", post.id);
           if (error) {
             alert("Xóa bài viết thất bại: " + error.message);
             deleteBtn.disabled = false;
             deleteBtn.textContent = "🗑️ Xóa";
             return;
           }
-
           await loadPosts();
         });
 
-        actions.append(editBtn, deleteBtn);
-        card.append(category, title, meta, content, actions);
+        // Gắn các nút vào cụm hành động
+        actions.append(streakBtn, editBtn, deleteBtn);
+        
+        // Gắn mọi thứ vào card bài viết
+        card.append(category, title, meta, content);
+        if (readMoreBtn) card.appendChild(readMoreBtn); // Gắn nút xem thêm dưới nội dung
+        card.appendChild(actions);
+
         container.appendChild(card);
       });
     }
 
     async function loadPosts() {
       $("loading").textContent = "Đang tải bài viết...";
-
       const category = $("filter").value;
 
       let query = db
         .from("posts")
-        .select("id, title, author_name, category, content, created_at")
+        .select("id, title, author_name, category, content, created_at, likes")
         .order("created_at", { ascending: false })
         .limit(100);
 
@@ -440,7 +483,6 @@
       }
 
       const { data, error } = await query;
-
       $("loading").textContent = "";
 
       if (error) {
@@ -448,20 +490,18 @@
         showMessage("Không tải được bài viết: " + error.message, "error");
         return;
       }
-
       renderPosts(data || []);
     }
 
     $("postForm").addEventListener("submit", async event => {
       event.preventDefault();
-
       const author_name = $("author").value.trim();
       const title = $("title").value.trim();
       const category = $("category").value;
       const content = $("content").value.trim();
 
       if (!author_name || !title || !content) {
-        showMessage("Mày nhập đầy đủ các mục trước nhé!", "error");
+        showMessage("Nhập đầy đủ các mục trước nhé!", "error");
         return;
       }
 
@@ -489,14 +529,11 @@
       $("author").value = "";
       $("title").value = "";
       $("content").value = "";
-
       await loadPosts();
     });
 
-    // --- PHẦN CODE ĐÃ ĐƯỢC CHỈNH SỬA ---
     $("editForm").addEventListener("submit", async event => {
       event.preventDefault();
-
       if (!currentEditingPostId) return;
 
       const title = $("editTitle").value.trim();
@@ -517,11 +554,7 @@
 
       const { error } = await db
         .from("posts")
-        .update({
-          title,
-          category,
-          content
-        })
+        .update({ title, category, content })
         .eq("id", currentEditingPostId);
 
       button.disabled = false;
@@ -535,21 +568,14 @@
 
       $("editMessage").textContent = "Cập nhật thành công!";
       $("editMessage").className = "success";
-
-      // Đợi load lại dữ liệu mới nhất từ Supabase xong mới đóng Modal
       await loadPosts();
       closeEditModal();
     });
-    // --- KẾT THÚC PHẦN CHỈNH SỬA ---
 
     document.querySelector(".modal-close").addEventListener("click", closeEditModal);
-
     $("editModal").addEventListener("click", event => {
-      if (event.target === $("editModal")) {
-        closeEditModal();
-      }
+      if (event.target === $("editModal")) closeEditModal();
     });
-
     $("filter").addEventListener("change", loadPosts);
 
     loadPosts();
