@@ -1082,3 +1082,76 @@ input[type="button"],
 .nnvc-brand-logo span.icon {
   font-size: 22px;
 }
+/* ==========================================================
+   ELEMENTS CHỮA LÀNH & CHILL CHO NHẶT NHẠNH VĂN CHƯƠNG
+   ========================================================== */
+
+/* 1. Hiệu ứng nền mờ ảo, lãng mạn (Glow & Floating effect) */
+@keyframes softFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.healing-box, .content-section, .welcome, .topic-card {
+  animation: softFloat 6s ease-in-out infinite;
+}
+
+/* 2. Khung trích dẫn thơ mộng dạng "Góc nhỏ tâm hồn" */
+.healing-quote-box {
+  position: relative;
+  background: linear-gradient(135deg, #FFFDF9, #F4F1EA);
+  border: 1px dashed #D6DFCD;
+  border-radius: 24px;
+  padding: 30px;
+  margin: 30px auto;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(88, 99, 77, 0.05);
+}
+
+.healing-quote-box::before {
+  content: '☕ 🌿';
+  display: block;
+  font-size: 20px;
+  margin-bottom: 10px;
+  letter-spacing: 5px;
+}
+
+/* 3. Hiệu ứng gạch chân sóng lượn (Wavy underline) mang cảm giác văn chương */
+.wavy-text {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: #B7CBB0;
+  text-underline-offset: 6px;
+}
+
+/* 4. Thẻ tag danh mục kiểu "Chiếc lá/Viên kẹo pastel" */
+.healing-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #E8F0E1;
+  color: #607A5A;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);
+  margin-bottom: 10px;
+}
+
+/* 5. Hiệu ứng rèm sương mờ (Soft glassmorphism cho các card) */
+.glass-card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 6. Góc chú thích nhỏ xinh (Lưu ý dưới chân bài) */
+.healing-footer-note {
+  text-align: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: #827D70;
+  font-size: 15px;
+  margin: 40px 0 20px;
+}
+
