@@ -257,3 +257,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (saveEditBtn) saveEditBtn.addEventListener('click', saveEdit);
   }, 500);
 });
+/* Tự động tạo hiệu ứng lá mùa thu rơi chill chill */
+function createLeaves() {
+  const leafSymbols = ['🍁', '🍂', '🍃', '🌿'];
+  const container = document.body;
+
+  setInterval(() => {
+    const leaf = document.createElement('div');
+    leaf.className = 'falling-leaf';
+    leaf.textContent = leafSymbols[Math.floor(Math.random() * leafSymbols.length)];
+    
+    // Ngẫu nhiên vị trí xuất hiện, tốc độ rơi và kích thước lá
+    leaf.style.left = Math.random() * 100 + 'vw';
+    leaf.style.fontSize = (Math.floor(Math.random() * 12) + 14) + 'px';
+    const duration = Math.random() * 5 + 6; // Rơi từ 6 đến 11 giây cho êm
+    leaf.style.animationDuration = duration + 's';
+    
+    container.appendChild(leaf);
+
+    // Xóa lá sau khi rơi xong để không nặng máy
+    setTimeout(() => {
+      leaf.remove();
+    }, duration * 1000);
+  }, 800); // Cứ mỗi 0.8 giây thả một chiếc lá cho lãng mạn
+}
+
+// Chạy hiệu ứng khi tải xong trang
+document.addEventListener('DOMContentLoaded', createLeaves);
+
